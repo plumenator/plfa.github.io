@@ -81,7 +81,7 @@ successor of two; and so on.
 Write out `7` in longhand.
 
 ```
--- Your code goes here
+seven = suc (suc (suc (suc (suc (suc (suc zero))))))
 ```
 
 
@@ -430,7 +430,26 @@ other word for evidence, which we will use interchangeably, is _proof_.
 Compute `3 + 4`, writing out your reasoning as a chain of equations, using the equations for `+`.
 
 ```
--- Your code goes here
+_ : 3 + 4 ≡ 7
+_ =
+  begin
+    3 + 4
+  ≡⟨⟩
+    suc (2 + 4)
+  ≡⟨⟩
+    suc (suc (1 + 4))
+  ≡⟨⟩
+    suc (suc (suc (0 + 4)))
+  ≡⟨⟩
+    suc (suc (suc 4))
+  ≡⟨⟩
+    suc (suc 5)
+  ≡⟨⟩
+    suc 6
+  ≡⟨⟩
+    7
+  ∎
+
 ```
 
 
@@ -492,7 +511,20 @@ Compute `3 * 4`, writing out your reasoning as a chain of equations, using the e
 (You do not need to step through the evaluation of `+`.)
 
 ```
--- Your code goes here
+_ =
+  begin
+    3 * 4
+  ≡⟨⟩
+    4 + (2 * 4)
+  ≡⟨⟩
+    4 + (4 + (1 * 4))
+  ≡⟨⟩
+    4 + (4 + (4 + (0 * 4)))
+  ≡⟨⟩
+    4 + (4 + (4 + (0)))
+  ≡⟨⟩
+    12
+  ∎
 ```
 
 
@@ -506,7 +538,14 @@ Define exponentiation, which is given by the following equations:
 Check that `3 ^ 4` is `81`.
 
 ```
--- Your code goes here
+_^_ : ℕ → ℕ → ℕ
+n ^ 0 = 1
+m ^ (suc n) = m * (m ^ n)
+
+_ =
+  begin
+  2 ^ 5 ≡ 32
+  ∎
 ```
 
 
@@ -571,7 +610,33 @@ _ =
 Compute `5 ∸ 3` and `3 ∸ 5`, writing out your reasoning as a chain of equations.
 
 ```
--- Your code goes here
+_ : 5 ∸ 3 ≡ 2
+_ =
+  begin
+    5 ∸ 3
+  ≡⟨⟩
+    4 ∸ 2
+  ≡⟨⟩
+    3 ∸ 1
+  ≡⟨⟩
+    2 ∸ 0
+  ≡⟨⟩
+    2
+  ∎
+
+_ : 3 ∸ 5 ≡ 0
+_ =
+  begin
+    3 ∸ 5
+  ≡⟨⟩
+    2 ∸ 4
+  ≡⟨⟩
+    1 ∸ 3
+  ≡⟨⟩
+    0 ∸ 2
+  ≡⟨⟩
+    0
+  ∎
 ```
 
 
@@ -918,7 +983,28 @@ represents a positive natural, and represent zero by `⟨⟩ O`.
 Confirm that these both give the correct answer for zero through four.
 
 ```
--- Your code goes here
+inc : Bin → Bin
+inc ⟨⟩ = ⟨⟩ I
+inc (x O) = x I
+inc (x I) = inc x O
+
+_ : inc (⟨⟩ O I I O I) ≡ ⟨⟩ O I I I O
+_ = refl
+
+to : ℕ → Bin
+to zero = ⟨⟩
+to (suc x) = inc (to x)
+
+_ : to 25 ≡ ⟨⟩ I I O O I
+_ = refl
+
+from : Bin → ℕ
+from ⟨⟩ = zero
+from (x O) = from x * 2
+from (x I) = suc (from x * 2)
+
+_ : from (⟨⟩ O O I I O O I) ≡ 25
+_ = refl
 ```
 
 
