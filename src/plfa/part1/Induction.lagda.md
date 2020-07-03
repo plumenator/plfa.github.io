@@ -938,7 +938,22 @@ Show multiplication is associative, that is,
 for all naturals `m`, `n`, and `p`.
 
 ```
--- Your code goes here
+*-zero : ∀ (n : ℕ) → n * zero ≡ zero
+*-zero zero = refl
+*-zero (suc n) rewrite *-zero n = refl
+
+*-assoc : ∀ (m n p : ℕ) → (m * n) * p ≡ m * (n * p)
+*-assoc zero n p = refl
+*-assoc (suc m) n p =
+  begin
+    (suc m * n) * p
+  ≡⟨⟩
+    (n + m * n) * p
+  ≡⟨ *-distrib-+ n (m * n) p ⟩
+    (n * p) + (m * n) * p
+  ≡⟨ cong ((n * p) +_) (*-assoc m n p) ⟩
+    (n * p) + m * (n * p)
+  ∎
 ```
 
 
