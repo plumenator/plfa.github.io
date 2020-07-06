@@ -1068,6 +1068,83 @@ Show the following three laws
 for all `m`, `n`, and `p`.
 
 
+```
+open import Data.Nat using (_^_)
+
+^-distribˡ-+-* : ∀ (m n p : ℕ) → m ^ (n + p) ≡ (m ^ n) * (m ^ p)
+^-distribˡ-+-* m zero zero = refl
+^-distribˡ-+-* m (suc n) p rewrite ^-distribˡ-+-* m n p | *-assoc m (m ^ n) (m ^ p) = refl
+^-distribˡ-+-* m n (suc p) =
+  begin
+    m ^ (n + suc p)
+  ≡⟨ cong (m ^_) (+-comm n (suc p)) ⟩
+    m ^ (suc p + n)
+  ≡⟨⟩
+    m ^ suc (p + n)
+  ≡⟨⟩
+    m * m ^ (p + n)
+  ≡⟨ cong (m *_) (^-distribˡ-+-* m p n) ⟩
+    m * ((m ^ p) * (m ^ n))
+  ≡⟨ sym (*-assoc m (m ^ p) (m ^ n)) ⟩
+    (m ^ suc p) * (m ^ n)
+  ≡⟨ *-comm (m ^ suc p) (m ^ n) ⟩
+    (m ^ n) * (m ^ suc p)
+  ∎
+
+mnp : ℕ → ℕ → ℕ → ℕ → ℕ
+mnp m n p x = m * x * (n ^ p)
+
+^-distribʳ-* : ∀ (m n p : ℕ) → (m * n) ^ p ≡ (m ^ p) * (n ^ p)
+^-distribʳ-* m n zero = refl
+^-distribʳ-* m n (suc p) =
+  begin
+    (m * n) ^ suc p
+  ≡⟨ cong (m * n *_) (^-distribʳ-* m n p) ⟩
+    (m * n) * ((m ^ p) * (n ^ p))
+  ≡⟨ sym (*-assoc (m * n) (m ^ p) (n ^ p)) ⟩
+    m * n * (m ^ p) * (n ^ p)
+  ≡⟨ cong (_* (n ^ p)) (*-assoc m n (m ^ p)) ⟩
+    m * (n * (m ^ p)) * (n ^ p)
+  ≡⟨ cong (mnp m n p) (*-comm n (m ^ p)) ⟩
+    m * ((m ^ p) * n) * (n ^ p)
+  ≡⟨ cong (_* (n ^ p)) (sym (*-assoc m (m ^ p) n)) ⟩
+    m * (m ^ p) * n * (n ^ p)
+  ≡⟨⟩
+    (m ^ suc p) * n * (n ^ p)
+  ≡⟨ *-assoc (m ^ suc p) n (n ^ p) ⟩
+    (m ^ suc p) * (n ^ suc p)
+  ∎
+
+m-^-n : ℕ → ℕ → ℕ → ℕ
+m-^-n m n x = m ^ (n + x)
+
+m-^-p : ℕ → ℕ → ℕ → ℕ → ℕ
+m-^-p m p n x = m ^ (x + p * n)
+
+^-*-assoc : ∀ (m n p : ℕ) → (m ^ n) ^ p ≡ m ^ (n * p)
+^-*-assoc m n zero rewrite *-zero n = refl
+^-*-assoc m n (suc p) =
+  begin
+    (m ^ n) ^ suc p
+  ≡⟨⟩
+    (m ^ n) * ((m ^ n) ^ p)
+  ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n p) ⟩
+    (m ^ n) * (m ^ (n * p))
+  ≡⟨ sym (^-distribˡ-+-* m n (n * p)) ⟩
+    m ^ (n + n * p)
+  ≡⟨ cong (m-^-n m n) (*-comm n p) ⟩
+    m ^ (n + p * n)
+  ≡⟨ cong (m-^-p m p n) (sym (*-identity n)) ⟩
+    m ^ (n * 1 + p * n)
+  ≡⟨ cong (m-^-p m p n) (*-comm n 1) ⟩
+    m ^ (1 * n + p * n)
+  ≡⟨ cong (m ^_) (sym (*-distrib-+ 1 p n)) ⟩
+    m ^ (suc p * n)
+  ≡⟨ cong (m ^_) (*-comm (suc p) n) ⟩
+    m ^ (n * suc p)
+  ∎
+```
+
 #### Exercise `Bin-laws` (stretch) {name=Bin-laws}
 
 Recall that
