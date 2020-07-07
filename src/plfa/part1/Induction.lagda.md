@@ -1166,7 +1166,58 @@ over bitstrings:
 For each law: if it holds, prove; if not, give a counterexample.
 
 ```
--- Your code goes here
+data Bin : Set where
+  ⟨⟩ : Bin
+  _O : Bin → Bin
+  _I : Bin → Bin
+
+inc : Bin → Bin
+inc ⟨⟩ = ⟨⟩ I
+inc (x O) = x I
+inc (x I) = inc x O
+
+to : ℕ → Bin
+to zero = ⟨⟩
+to (suc x) = inc (to x)
+
+from : Bin → ℕ
+from ⟨⟩ = zero
+from (x O) = from x * 2
+from (x I) = suc (from x * 2)
+
+from-inc-suc-from : ∀ (b : Bin) → from (inc b) ≡ suc (from b)
+from-inc-suc-from ⟨⟩ = refl
+from-inc-suc-from (b O) = refl
+from-inc-suc-from (b I) rewrite from-inc-suc-from b = refl
+  -- begin
+  --   from (inc (b I))
+  -- ≡⟨⟩
+  --   from (inc b O)
+  -- ≡⟨⟩
+  --   from (inc b) * 2
+  -- ≡⟨ cong (_* 2) () ⟩
+  --   suc (from b) * 2
+  -- ≡⟨⟩
+  --   suc (from (b I))
+  -- ∎
+
+open import Relation.Nullary using (¬_)
+
+to-from : ¬ (to (from (⟨⟩ O I)) ≡ ⟨⟩ O I)
+to-from = λ()
+
+from-to : ∀ (n : ℕ) → from (to n) ≡ n
+from-to zero = refl
+from-to (suc n) =
+  begin
+    from (to (suc n))
+  ≡⟨⟩
+    from (inc (to n))
+  ≡⟨ from-inc-suc-from (to n) ⟩
+    suc (from (to n))
+  ≡⟨ cong suc (from-to n) ⟩
+    suc n
+  ∎
 ```
 
 
