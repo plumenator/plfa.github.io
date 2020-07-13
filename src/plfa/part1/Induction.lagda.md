@@ -1153,22 +1153,27 @@ m-^-p m p n x = m ^ (x + p * n)
 
 ^-*-assoc : ∀ (m n p : ℕ) → (m ^ n) ^ p ≡ m ^ (n * p)
 ^-*-assoc m n zero rewrite *-zero n = refl
-^-*-assoc m n (suc p) =
-  begin
-    (m ^ n) ^ suc p
-  ≡⟨⟩
-    (m ^ n) * ((m ^ n) ^ p)
-  ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n p) ⟩
-    (m ^ n) * (m ^ (n * p))
-  ≡⟨ sym (^-distribˡ-+-* m n (n * p)) ⟩
-    m ^ (n + n * p)
-  ≡⟨ cong (m-^-n m n) (*-comm n p) ⟩
-    m ^ (n + p * n)
-  ≡⟨⟩
-    m ^ (suc p * n)
-  ≡⟨ cong (m ^_) (*-comm (suc p) n) ⟩
-    m ^ (n * suc p)
-  ∎
+-- ^-*-assoc m n (suc p) =
+--   begin
+--     (m ^ n) ^ suc p
+--   ≡⟨⟩
+--     (m ^ n) * ((m ^ n) ^ p)
+--   ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n p) ⟩
+--     (m ^ n) * (m ^ (n * p))
+--   ≡⟨ sym (^-distribˡ-+-* m n (n * p)) ⟩
+--     m ^ (n + n * p)
+--   ≡⟨ cong (m-^-n m n) (*-comm n p) ⟩
+--     m ^ (n + p * n)
+--   ≡⟨⟩
+--     m ^ (suc p * n)
+--   ≡⟨ cong (m ^_) (*-comm (suc p) n) ⟩
+--     m ^ (n * suc p)
+--   ∎
+^-*-assoc m n (suc p) rewrite ^-*-assoc m n p
+                            | sym (^-distribˡ-+-* m n (n * p))
+                            | *-comm n p
+                            | *-comm n (suc p)
+                            = refl
 ```
 
 #### Exercise `Bin-laws` (stretch) {name=Bin-laws}
