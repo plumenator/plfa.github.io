@@ -961,17 +961,21 @@ for all naturals `m`, `n`, and `p`.
 *-zero (suc n) rewrite *-zero n = refl
 
 *-assoc : ∀ (m n p : ℕ) → (m * n) * p ≡ m * (n * p)
+-- *-assoc zero n p = refl
+-- *-assoc (suc m) n p =
+--   begin
+--     (suc m * n) * p
+--   ≡⟨⟩
+--     (n + m * n) * p
+--   ≡⟨ *-distrib-+ n (m * n) p ⟩
+--     (n * p) + (m * n) * p
+--   ≡⟨ cong ((n * p) +_) (*-assoc m n p) ⟩
+--     (n * p) + m * (n * p)
+--   ∎
+
 *-assoc zero n p = refl
-*-assoc (suc m) n p =
-  begin
-    (suc m * n) * p
-  ≡⟨⟩
-    (n + m * n) * p
-  ≡⟨ *-distrib-+ n (m * n) p ⟩
-    (n * p) + (m * n) * p
-  ≡⟨ cong ((n * p) +_) (*-assoc m n p) ⟩
-    (n * p) + m * (n * p)
-  ∎
+*-assoc (suc m) n p rewrite *-distrib-+ n (m * n) p
+                          | *-assoc m n p = refl
 ```
 
 
