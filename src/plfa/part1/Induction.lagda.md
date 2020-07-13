@@ -991,53 +991,62 @@ you will need to formulate and prove suitable lemmas.
 ```
 *-identity : ∀ (n : ℕ) → n * 1 ≡ n
 *-identity zero = refl
-*-identity (suc n) =
-  begin
-    suc n * 1
-  ≡⟨⟩
-    1 + n * 1
-  ≡⟨⟩
-    suc (n * 1)
-  ≡⟨ cong suc (*-identity n) ⟩
-    suc n
-  ∎
+-- *-identity (suc n) =
+--   begin
+--     suc n * 1
+--   ≡⟨⟩
+--     1 + n * 1
+--   ≡⟨⟩
+--     suc (n * 1)
+--   ≡⟨ cong suc (*-identity n) ⟩
+--     suc n
+--   ∎
+*-identity (suc n) rewrite *-identity n = refl
 
-sucmn : ℕ → ℕ → ℕ → ℕ
-sucmn m n x = suc x + m * n
+-- sucmn : ℕ → ℕ → ℕ → ℕ
+-- sucmn m n x = suc x + m * n
 
 *-suc : ∀ (m n : ℕ) → m * suc n ≡ m + m * n
 *-suc zero n = refl
-*-suc (suc m) n =
-  begin
-    suc m * suc n
-  ≡⟨⟩
-    suc n + m * suc n
-  ≡⟨ cong (suc n +_) (*-suc m n) ⟩
-    suc n + (m + m * n)
-  ≡⟨ sym (+-assoc (suc n) m (m * n)) ⟩
-    (suc n + m) + m * n
-  ≡⟨⟩
-    suc (n + m) + m * n
-  ≡⟨ cong (sucmn m n) (+-comm n m) ⟩
-    suc (m + n) + m * n
-  ≡⟨⟩
-    (suc m + n) + m * n
-  ≡⟨ +-assoc (suc m) n (m * n) ⟩
-    suc m + suc m * n
-  ∎
+-- *-suc (suc m) n =
+--   begin
+--     suc m * suc n
+--   ≡⟨⟩
+--     suc n + m * suc n
+--   ≡⟨ cong (suc n +_) (*-suc m n) ⟩
+--     suc n + (m + m * n)
+--   ≡⟨ sym (+-assoc (suc n) m (m * n)) ⟩
+--     (suc n + m) + m * n
+--   ≡⟨⟩
+--     suc (n + m) + m * n
+--   ≡⟨ cong (sucmn m n) (+-comm n m) ⟩
+--     suc (m + n) + m * n
+--   ≡⟨⟩
+--     (suc m + n) + m * n
+--   ≡⟨ +-assoc (suc m) n (m * n) ⟩
+--     suc m + suc m * n
+--   ∎
+*-suc (suc m) n rewrite *-suc m n
+                      | sym (+-assoc n m (m * n))
+                      | +-comm n m
+                      | +-assoc m n (m * n) = refl
 
 *-comm : ∀ (m n : ℕ) → m * n ≡ n * m
+-- *-comm m zero rewrite *-zero m = refl
+-- *-comm m (suc n) =
+--   begin
+--     m * suc n
+--   ≡⟨ *-suc m n ⟩
+--     m + m * n
+--   ≡⟨ cong (m +_) (*-comm m n) ⟩
+--     m + n * m
+--   ≡⟨⟩
+--     suc n * m
+--   ∎
+
 *-comm m zero rewrite *-zero m = refl
-*-comm m (suc n) =
-  begin
-    m * suc n
-  ≡⟨ *-suc m n ⟩
-    m + m * n
-  ≡⟨ cong (m +_) (*-comm m n) ⟩
-    m + n * m
-  ≡⟨⟩
-    suc n * m
-  ∎
+*-comm m (suc n) rewrite *-comm n m
+                       | *-suc m n = refl
 ```
 
 
