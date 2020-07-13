@@ -1239,16 +1239,18 @@ to-from = λ()
 
 from-to : ∀ (n : ℕ) → from (to n) ≡ n
 from-to zero = refl
-from-to (suc n) =
-  begin
-    from (to (suc n))
-  ≡⟨⟩
-    from (inc (to n))
-  ≡⟨ from-inc-suc-from (to n) ⟩
-    suc (from (to n))
-  ≡⟨ cong suc (from-to n) ⟩
-    suc n
-  ∎
+-- from-to (suc n) =
+--   begin
+--     from (to (suc n))
+--   ≡⟨⟩
+--     from (inc (to n))
+--   ≡⟨ from-inc-suc-from (to n) ⟩
+--     suc (from (to n))
+--   ≡⟨ cong suc (from-to n) ⟩
+--     suc n
+--   ∎
+from-to (suc n) rewrite from-inc-suc-from (to n)
+                      | from-to n = refl
 ```
 
 
