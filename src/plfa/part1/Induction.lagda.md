@@ -1128,29 +1128,36 @@ open import Data.Nat using (_^_)
                                  | sym (*-assoc m (m ^ p) (m ^ n))
                                  | *-comm (m ^ n) (m * m ^ p)= refl
 
-mnp : ℕ → ℕ → ℕ → ℕ → ℕ
-mnp m n p x = m * x * (n ^ p)
+-- mnp : ℕ → ℕ → ℕ → ℕ → ℕ
+-- mnp m n p x = m * x * (n ^ p)
 
 ^-distribʳ-* : ∀ (m n p : ℕ) → (m * n) ^ p ≡ (m ^ p) * (n ^ p)
 ^-distribʳ-* m n zero = refl
-^-distribʳ-* m n (suc p) =
-  begin
-    (m * n) ^ suc p
-  ≡⟨ cong (m * n *_) (^-distribʳ-* m n p) ⟩
-    (m * n) * ((m ^ p) * (n ^ p))
-  ≡⟨ sym (*-assoc (m * n) (m ^ p) (n ^ p)) ⟩
-    m * n * (m ^ p) * (n ^ p)
-  ≡⟨ cong (_* (n ^ p)) (*-assoc m n (m ^ p)) ⟩
-    m * (n * (m ^ p)) * (n ^ p)
-  ≡⟨ cong (mnp m n p) (*-comm n (m ^ p)) ⟩
-    m * ((m ^ p) * n) * (n ^ p)
-  ≡⟨ cong (_* (n ^ p)) (sym (*-assoc m (m ^ p) n)) ⟩
-    m * (m ^ p) * n * (n ^ p)
-  ≡⟨⟩
-    (m ^ suc p) * n * (n ^ p)
-  ≡⟨ *-assoc (m ^ suc p) n (n ^ p) ⟩
-    (m ^ suc p) * (n ^ suc p)
-  ∎
+-- ^-distribʳ-* m n (suc p) =
+--   begin
+--     (m * n) ^ suc p
+--   ≡⟨ cong (m * n *_) (^-distribʳ-* m n p) ⟩
+--     (m * n) * ((m ^ p) * (n ^ p))
+--   ≡⟨ sym (*-assoc (m * n) (m ^ p) (n ^ p)) ⟩
+--     m * n * (m ^ p) * (n ^ p)
+--   ≡⟨ cong (_* (n ^ p)) (*-assoc m n (m ^ p)) ⟩
+--     m * (n * (m ^ p)) * (n ^ p)
+--   ≡⟨ cong (mnp m n p) (*-comm n (m ^ p)) ⟩
+--     m * ((m ^ p) * n) * (n ^ p)
+--   ≡⟨ cong (_* (n ^ p)) (sym (*-assoc m (m ^ p) n)) ⟩
+--     m * (m ^ p) * n * (n ^ p)
+--   ≡⟨⟩
+--     (m ^ suc p) * n * (n ^ p)
+--   ≡⟨ *-assoc (m ^ suc p) n (n ^ p) ⟩
+--     (m ^ suc p) * (n ^ suc p)
+--   ∎
+^-distribʳ-* m n (suc p) rewrite ^-distribʳ-* m n p
+                               | sym (*-assoc (m * n) (m ^ p) (n ^ p))
+                               | (*-assoc m n (m ^ p))
+                               | *-comm n (m ^ p)
+                               | sym (*-assoc m (m ^ p) n)
+                               | *-assoc (m * m ^ p) n (n ^ p)
+                               = refl
 
 m-^-n : ℕ → ℕ → ℕ → ℕ
 m-^-n m n x = m ^ (n + x)
