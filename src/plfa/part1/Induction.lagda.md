@@ -941,9 +941,9 @@ for all naturals `m`, `n`, and `p`.
 --                                     | sym (+-assoc p (m * p) (p + n * p)) = refl
 
 *-distrib-+ zero n p = refl
-*-distrib-+ (suc m) n p rewrite +-comm (suc m) n
-                              | *-distrib-+ m n p
+*-distrib-+ (suc m) n p rewrite *-distrib-+ m n p
                               | +-assoc p (m * p) (n * p) = refl
+
 ```
 
 
