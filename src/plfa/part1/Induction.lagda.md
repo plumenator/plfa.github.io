@@ -989,20 +989,6 @@ for all naturals `m` and `n`.  As with commutativity of addition,
 you will need to formulate and prove suitable lemmas.
 
 ```
-*-identity : ∀ (n : ℕ) → n * 1 ≡ n
-*-identity zero = refl
--- *-identity (suc n) =
---   begin
---     suc n * 1
---   ≡⟨⟩
---     1 + n * 1
---   ≡⟨⟩
---     suc (n * 1)
---   ≡⟨ cong suc (*-identity n) ⟩
---     suc n
---   ∎
-*-identity (suc n) rewrite *-identity n = refl
-
 -- sucmn : ℕ → ℕ → ℕ → ℕ
 -- sucmn m n x = suc x + m * n
 
@@ -1178,11 +1164,7 @@ m-^-p m p n x = m ^ (x + p * n)
     m ^ (n + n * p)
   ≡⟨ cong (m-^-n m n) (*-comm n p) ⟩
     m ^ (n + p * n)
-  ≡⟨ cong (m-^-p m p n) (sym (*-identity n)) ⟩
-    m ^ (n * 1 + p * n)
-  ≡⟨ cong (m-^-p m p n) (*-comm n 1) ⟩
-    m ^ (1 * n + p * n)
-  ≡⟨ cong (m ^_) (sym (*-distrib-+ 1 p n)) ⟩
+  ≡⟨⟩
     m ^ (suc p * n)
   ≡⟨ cong (m ^_) (*-comm (suc p) n) ⟩
     m ^ (n * suc p)
