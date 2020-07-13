@@ -896,40 +896,54 @@ for all naturals `m`, `n`, and `p`.
 
 ```
 *-distrib-+ : ∀ (m n p : ℕ) → (m + n) * p ≡ m * p + n * p
-*-distrib-+ (suc m) n p =
-  begin
-    (suc m + n) * p
-  ≡⟨⟩
-    p + (m + n) * p
-  ≡⟨ cong (p +_) (*-distrib-+ m n p) ⟩
-    p + (m * p + n * p)
-  ≡⟨ sym (+-assoc p (m * p) (n * p)) ⟩
-    (p + m * p) + n * p
-  ≡⟨⟩
-    suc m * p + n * p
-  ∎
-*-distrib-+ m (suc n) p =
-  begin
-    (m + suc n) * p
-  ≡⟨ cong (_* p) (+-comm m (suc n)) ⟩
-    (suc n + m) * p
-  ≡⟨⟩
-    p + (n + m) * p
-  ≡⟨ cong (p +_) (*-distrib-+ n m p) ⟩
-    p + (n * p + m * p)
-  ≡⟨ sym (+-assoc p (n * p) (m * p)) ⟩
-    p + n * p + m * p
-  ≡⟨⟩
-    suc n * p + m * p
-  ≡⟨ +-comm (suc n * p) (m * p) ⟩
-    m * p + suc n * p
-  ∎
-*-distrib-+ zero zero p =
-  begin
-    (zero + zero) * p
-  ≡⟨⟩
-    zero * p
-  ∎
+-- *-distrib-+ (suc m) n p =
+--   begin
+--     (suc m + n) * p
+--   ≡⟨⟩
+--     p + (m + n) * p
+--   ≡⟨ cong (p +_) (*-distrib-+ m n p) ⟩
+--     p + (m * p + n * p)
+--   ≡⟨ sym (+-assoc p (m * p) (n * p)) ⟩
+--     (p + m * p) + n * p
+--   ≡⟨⟩
+--     suc m * p + n * p
+--   ∎
+-- *-distrib-+ m (suc n) p =
+--   begin
+--     (m + suc n) * p
+--   ≡⟨ cong (_* p) (+-comm m (suc n)) ⟩
+--     (suc n + m) * p
+--   ≡⟨⟩
+--     p + (n + m) * p
+--   ≡⟨ cong (p +_) (*-distrib-+ n m p) ⟩
+--     p + (n * p + m * p)
+--   ≡⟨ sym (+-assoc p (n * p) (m * p)) ⟩
+--     p + n * p + m * p
+--   ≡⟨⟩
+--     suc n * p + m * p
+--   ≡⟨ +-comm (suc n * p) (m * p) ⟩
+--     m * p + suc n * p
+--   ∎
+-- *-distrib-+ zero zero p =
+--   begin
+--     (zero + zero) * p
+--   ≡⟨⟩
+--     zero * p
+--   ∎
+
+-- *-distrib-+ zero n p = refl
+-- *-distrib-+ (suc m) zero p rewrite +-identityʳ m
+--                                  | +-identityʳ (p + m * p) = refl
+-- *-distrib-+ (suc m) (suc n) p rewrite +-comm m (suc n)
+--                                     | *-distrib-+ n m p
+--                                     | sym (+-assoc p (n * p) (m * p))
+--                                     | +-comm (p + n * p) (m * p)
+--                                     | sym (+-assoc p (m * p) (p + n * p)) = refl
+
+*-distrib-+ zero n p = refl
+*-distrib-+ (suc m) n p rewrite +-comm (suc m) n
+                              | *-distrib-+ m n p
+                              | +-assoc p (m * p) (n * p) = refl
 ```
 
 
