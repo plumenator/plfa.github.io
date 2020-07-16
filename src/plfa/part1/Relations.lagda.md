@@ -96,7 +96,7 @@ _ : 2 ≤ 4
 _ = s≤s (s≤s z≤n)
 ```
 
-
+Question: Don't we need to prove the general case?
 
 
 ## Implicit arguments
