@@ -346,6 +346,21 @@ out to be immensely valuable, and one that we use often.
 Again, it is a good exercise to prove transitivity interactively in Emacs,
 using holes and the `C-c C-c`, `C-c C-,`, and `C-c C-r` commands.
 
+```
+my-≤-trans : ∀ {m n p : ℕ}
+  → m ≤ n
+  → n ≤ p
+    -----
+  → m ≤ p
+-- my-≤-trans m≤n n≤p = {!!}
+-- my-≤-trans m≤n n≤p = {!m≤n!}
+-- my-≤-trans z≤n n≤p = {!!}
+my-≤-trans z≤n n≤p = z≤n
+-- my-≤-trans (s≤s m≤n) n≤p = {!n≤p!}
+-- my-≤-trans (s≤s m≤n) (s≤s n≤p) = {!!}
+-- my-≤-trans (s≤s m≤n) (s≤s n≤p) = s≤s {!!}
+my-≤-trans (s≤s m≤n) (s≤s n≤p) = s≤s (my-≤-trans m≤n n≤p)
+```
 
 ## Anti-symmetry
 
