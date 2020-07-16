@@ -205,6 +205,10 @@ inv-z≤n : ∀ {m : ℕ}
     --------
   → m ≡ zero
 inv-z≤n z≤n = refl
+--inv-z≤n {m} (z≤n {n = 0}) = {!!}
+--inv-z≤n {m} (z≤n {n = 1}) = {!!}
+--inv-z≤n {0} (z≤n {0}) = {!!}
+--inv-z≤n {4} (z≤n {4}) = {!!}
 ```
 
 ## Properties of ordering relations
