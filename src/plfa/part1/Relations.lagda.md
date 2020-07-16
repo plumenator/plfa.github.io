@@ -284,6 +284,14 @@ n`, and applying `s≤s` to that yields a proof of `suc n ≤ suc n`.
 It is a good exercise to prove reflexivity interactively in Emacs,
 using holes and the `C-c C-c`, `C-c C-,`, and `C-c C-r` commands.
 
+```
+≤-refl′ : ∀ {n : ℕ}
+    -----
+  → n ≤ n
+≤-refl′ {zero} = z≤n
+-- ≤-refl′ {suc n} rewrite (n ≤ n) = s≤s {!!}
+≤-refl′ {suc n} = s≤s ≤-refl′
+```
 
 ## Transitivity
 
