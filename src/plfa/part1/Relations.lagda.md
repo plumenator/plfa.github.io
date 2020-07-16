@@ -97,7 +97,11 @@ _ = s≤s (s≤s z≤n)
 ```
 
 Question: Don't we need to prove the general case?
-
+```
+-- Is this a proof?
+s≤s-proof : ∀ (m n : ℕ) → m ≤ n → suc m ≤ suc n
+s≤s-proof m n m≤n = s≤s m≤n
+```
 
 ## Implicit arguments
 
