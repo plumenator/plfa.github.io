@@ -390,6 +390,25 @@ and `suc n ≤ suc m` and must show `suc m ≡ suc n`.  The inductive
 hypothesis `≤-antisym m≤n n≤m` establishes that `m ≡ n`, and our goal
 follows by congruence.
 
+Interactive proof:
+
+```
+≤-antisym′ : ∀ {m n : ℕ}
+  → m ≤ n
+  → n ≤ m
+    -----
+  → m ≡ n
+-- ≤-antisym′ m≤n n≤m = {!!}
+-- ≤-antisym′ z≤n n≤m = {!!}
+-- ≤-antisym′ z≤n n≤m = {!n≤m!}
+-- ≤-antisym′ z≤n z≤n = {!!}
+≤-antisym′ z≤n z≤n = refl
+-- ≤-antisym′ (s≤s m≤n) n≤m = {!n≤m!}
+-- ≤-antisym′ (s≤s m≤n) (s≤s n≤m) = {!!}
+≤-antisym′ (s≤s m≤n) (s≤s n≤m) = cong suc (≤-antisym′ m≤n n≤m)
+-- ≤-antisym′ (s≤s m≤n) (s≤s n≤m) rewrite ≤-antisym′ m≤n n≤m = refl
+```
+
 #### Exercise `≤-antisym-cases` (practice) {name=leq-antisym-cases}
 
 The above proof omits cases where one argument is `z≤n` and one
