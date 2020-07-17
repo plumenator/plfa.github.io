@@ -545,6 +545,25 @@ variant that returns the flipped case:
 It differs from the original code in that it pattern
 matches on the second argument before the first argument.
 
+Interactive proof:
+```
+my-≤-total : ∀ (m n : ℕ) → Total m n
+-- my-≤-total m n = {!!}
+-- my-≤-total m n = {!m n!}
+-- my-≤-total zero zero = {!!}
+-- my-≤-total zero zero = {!forward!}
+-- my-≤-total zero zero = forward {!!}
+my-≤-total zero zero = forward z≤n
+-- my-≤-total zero (suc n) = {!forward!}
+-- my-≤-total zero (suc n) = forward {!!}
+my-≤-total zero (suc n) = forward z≤n
+-- my-≤-total (suc m) zero = {!flipped!}
+-- my-≤-total (suc m) zero = flipped {!!}
+my-≤-total (suc m) zero = flipped z≤n
+my-≤-total (suc m) (suc n) with my-≤-total m n
+...                          | forward m≤n = forward (s≤s m≤n)
+...                          | flipped n≤m = flipped (s≤s n≤m)
+```
 
 ## Monotonicity
 
