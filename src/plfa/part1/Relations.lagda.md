@@ -478,6 +478,7 @@ With that preliminary out of the way, we specify and prove totality:
 ≤-total : ∀ (m n : ℕ) → Total m n
 ≤-total zero    n                         =  forward z≤n
 ≤-total (suc m) zero                      =  flipped z≤n
+-- ≤-total m zero                      =  flipped z≤n
 ≤-total (suc m) (suc n) with ≤-total m n
 ...                        | forward m≤n  =  forward (s≤s m≤n)
 ...                        | flipped n≤m  =  flipped (s≤s n≤m)
