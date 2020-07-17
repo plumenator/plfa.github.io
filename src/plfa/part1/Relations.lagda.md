@@ -737,7 +737,30 @@ similar to that used for totality.
 [negation](/Negation/).)
 
 ```
--- Your code goes here
+data Trichotomy (m n : ℕ) : Set where
+  regular :
+      m < n
+      ---------
+    → Trichotomy m n
+
+  opposite :
+      n < m
+      ---------
+    → Trichotomy m n
+
+  equal :
+      m ≡ n
+      ---------
+    → Trichotomy m n
+
+<-trichotomy : ∀ (m n : ℕ) → Trichotomy m n
+<-trichotomy zero zero = equal refl
+<-trichotomy zero (suc n) = regular z<s
+<-trichotomy (suc m) zero = opposite z<s
+<-trichotomy (suc m) (suc n) with <-trichotomy m n
+...                            | regular m<n  = regular (s<s m<n)
+...                            | opposite n<m  = opposite (s<s n<m)
+...                            | equal refl  = equal refl
 ```
 
 #### Exercise `+-mono-<` (practice) {name=plus-mono-less}
