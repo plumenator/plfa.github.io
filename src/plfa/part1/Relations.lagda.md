@@ -738,12 +738,12 @@ similar to that used for totality.
 
 ```
 data Trichotomy (m n : ℕ) : Set where
-  regular :
+  forward :
       m < n
       ---------
     → Trichotomy m n
 
-  opposite :
+  flipped :
       n < m
       ---------
     → Trichotomy m n
@@ -755,11 +755,11 @@ data Trichotomy (m n : ℕ) : Set where
 
 <-trichotomy : ∀ (m n : ℕ) → Trichotomy m n
 <-trichotomy zero zero = equal refl
-<-trichotomy zero (suc n) = regular z<s
-<-trichotomy (suc m) zero = opposite z<s
+<-trichotomy zero (suc n) = forward z<s
+<-trichotomy (suc m) zero = flipped z<s
 <-trichotomy (suc m) (suc n) with <-trichotomy m n
-...                            | regular m<n  = regular (s<s m<n)
-...                            | opposite n<m  = opposite (s<s n<m)
+...                            | forward m<n  = forward (s<s m<n)
+...                            | flipped n<m  = flipped (s<s n<m)
 ...                            | equal refl  = equal refl
 ```
 
