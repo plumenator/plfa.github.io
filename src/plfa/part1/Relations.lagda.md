@@ -802,6 +802,11 @@ Show that `suc m ≤ n` implies `m < n`, and conversely.
 ≤-iff-< : ∀ (m n : ℕ) → suc m ≤ n → m < n
 ≤-iff-< zero (suc n) _ = z<s
 ≤-iff-< (suc m) (suc n) (s≤s suc-m≤n) = s<s (≤-iff-< m n suc-m≤n)
+
+inv-≤-iff-< : ∀ (m n : ℕ) → m < n → suc m ≤ n
+inv-≤-iff-< zero (suc n) m<n = s≤s z≤n
+inv-≤-iff-< (suc m) (suc n) (s<s m<n) = s≤s (inv-≤-iff-< m n m<n)
+
 ```
 
 #### Exercise `<-trans-revisited` (practice) {name=less-trans-revisited}
