@@ -415,7 +415,9 @@ The above proof omits cases where one argument is `z≤n` and one
 argument is `s≤s`.  Why is it ok to omit them?
 
 ```
--- Your code goes here
+-- ≤-antisym′ z≤n (s≤s n≤m) = ?
+-- Fails to compile because 0 is not a successor of any m : ℕ
+
 ```
 
 
