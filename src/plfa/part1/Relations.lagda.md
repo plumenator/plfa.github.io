@@ -1001,7 +1001,47 @@ properties of `One`. Also, you may need to prove that
 if `One b` then `1` is less or equal to the result of `from b`.)
 
 ```
--- Your code goes here
+data Bin : Set where
+  ⟨⟩ : Bin
+  _O : Bin → Bin
+  _I : Bin → Bin
+
+inc : Bin → Bin
+inc ⟨⟩ = ⟨⟩ I
+inc (x O) = x I
+inc (x I) = inc x O
+
+to : ℕ → Bin
+to zero = ⟨⟩
+to (suc x) = inc (to x)
+
+from : Bin → ℕ
+from ⟨⟩ = zero
+from (x O) = from x * 2
+from (x I) = suc (from x * 2)
+
+data One : Bin → Set where
+
+  one : One (⟨⟩ I)
+
+  _I : ∀ {b : Bin} → One b → One (b I)
+
+  _O : ∀ {b : Bin} → One b → One (b O)
+
+data Can : Bin → Set where
+
+  zero : Can ⟨⟩
+
+  can : ∀ {b : Bin} → One b → Can b
+
+inc-one : ∀ {b : Bin} → One b → One (inc b)
+inc-one one = one O
+inc-one (o I) = inc-one o O
+inc-one (o O) = o I
+
+inc-can : ∀ {b : Bin} → Can b → Can (inc b)
+inc-can zero = can one
+inc-can (can x) = can (inc-one x)
 ```
 
 ## Standard library
