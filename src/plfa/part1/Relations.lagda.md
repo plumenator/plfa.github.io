@@ -576,6 +576,23 @@ The proof is by induction on the first argument.
   The inductive hypothesis `+-monoʳ-≤ n p q p≤q` establishes that
   `n + p ≤ n + q`, and our goal follows by applying `s≤s`.
 
+Breaking it down:
+
+```
+my-+-monoʳ-≤ : ∀ (n p q : ℕ)
+  → p ≤ q
+    -------------
+  → n + p ≤ n + q
+my-+-monoʳ-≤ zero p q p≤q
+-- : zero + p ≤ zero + q
+-- : p ≤ q
+ = p≤q
+my-+-monoʳ-≤ (suc n) p q p≤q
+--  : suc n + p ≤ suc n + q
+--  : suc (n + p) ≤ suc (n + q)
+  = s≤s (my-+-monoʳ-≤ n p q p≤q)
+```
+
 Second, we deal with the special case of showing addition is
 monotonic on the left. This follows from the previous
 result and the commutativity of addition:
