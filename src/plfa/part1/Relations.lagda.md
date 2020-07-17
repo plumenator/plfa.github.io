@@ -934,7 +934,21 @@ successor of the sum of two even numbers, which is even.
 Show that the sum of two odd numbers is even.
 
 ```
--- Your code goes here
+o+o≡e : ∀ {m n : ℕ}
+  → odd m
+  → odd n
+    ------------
+  → even (m + n)
+
+e+o≡o : ∀ {m n : ℕ}
+  → even m
+  → odd n
+    ------------
+  → odd (m + n)
+
+o+o≡e (suc x) n = suc (e+o≡o x n)
+e+o≡o zero (suc x) = suc x
+e+o≡o (suc x) n = suc (o+o≡e x n)
 ```
 
 #### Exercise `Bin-predicates` (stretch) {name=Bin-predicates}
