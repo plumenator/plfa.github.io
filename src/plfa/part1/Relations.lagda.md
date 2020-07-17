@@ -821,9 +821,9 @@ the fact that inequality is transitive.
   → n < p
     -----
   → m < p
-<-trans-revisited {m} {n} {p} m<n n<p with inv-≤-iff-< m n m<n
-...                                 | (suc-m≤n) with inv-≤-iff-< n p n<p
-...                                               | (suc-n≤p) = ≤-iff-< m p (≤-trans suc-m≤n (≤-trans suc-n≤n suc-n≤p))
+<-trans-revisited {m} {n} {p} m<n n<p with inv-≤-iff-< m n m<n | inv-≤-iff-< n p n<p
+...                                 | (suc-m≤n) | (suc-n≤p)
+                                      = ≤-iff-< m p (≤-trans suc-m≤n (≤-trans suc-n≤n suc-n≤p))
   where
     suc-n≤n : ∀ {n : ℕ} → n ≤ suc n
     suc-n≤n {zero} = z≤n
