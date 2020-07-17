@@ -816,7 +816,18 @@ using the relation between strict inequality and inequality and
 the fact that inequality is transitive.
 
 ```
--- Your code goes here
+<-trans-revisited : ∀ {m n p : ℕ}
+  → m < n
+  → n < p
+    -----
+  → m < p
+<-trans-revisited {m} {n} {p} m<n n<p with inv-≤-iff-< m n m<n
+...                                 | (suc-m≤n) with inv-≤-iff-< n p n<p
+...                                               | (suc-n≤p) = ≤-iff-< m p (≤-trans suc-m≤n (≤-trans suc-n≤n suc-n≤p))
+  where
+    suc-n≤n : ∀ {n : ℕ} → n ≤ suc n
+    suc-n≤n {zero} = z≤n
+    suc-n≤n {suc n} = s≤s suc-n≤n
 ```
 
 
