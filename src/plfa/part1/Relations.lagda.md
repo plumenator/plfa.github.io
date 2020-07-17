@@ -1020,28 +1020,33 @@ from ⟨⟩ = zero
 from (x O) = from x * 2
 from (x I) = suc (from x * 2)
 
+data Can : Bin → Set
+
 data One : Bin → Set where
 
-  one : One (⟨⟩ I)
+  _I : ∀ {b : Bin} → Can b → One (b I)
 
-  _I : ∀ {b : Bin} → One b → One (b I)
+  _O : ∀ {b : Bin} → Can b → One (b O)
 
-  _O : ∀ {b : Bin} → One b → One (b O)
-
-data Can : Bin → Set where
+data Can where
 
   zero : Can ⟨⟩
 
   can : ∀ {b : Bin} → One b → Can b
 
-inc-one : ∀ {b : Bin} → One b → One (inc b)
-inc-one one = one O
-inc-one (o I) = inc-one o O
-inc-one (o O) = o I
-
 inc-can : ∀ {b : Bin} → Can b → Can (inc b)
-inc-can zero = can one
+inc-one : ∀ {b : Bin} → One b → One (inc b)
+
+inc-one (x I) = inc-can x O
+inc-one (x O) = x I
+
+inc-can zero = can (zero I)
 inc-can (can x) = can (inc-one x)
+
+can-to : ∀ {n : ℕ} → Can (to n)
+can-to {zero} = zero
+can-to {suc n} = inc-can (can-to {n})
+
 ```
 
 ## Standard library
