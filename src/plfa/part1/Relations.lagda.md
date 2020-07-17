@@ -769,7 +769,29 @@ Show that addition is monotonic with respect to strict inequality.
 As with inequality, some additional definitions may be required.
 
 ```
--- Your code goes here
+open import Data.Nat using (_+_)
+open import Data.Nat.Properties using (+-comm)
+
++-monoʳ-< : ∀ (n p q : ℕ)
+  → p < q
+    -------------
+  → n + p < n + q
++-monoʳ-< zero p q p<q = p<q
++-monoʳ-< (suc n) p q p<q = s<s (+-monoʳ-< n p q p<q)
+
++-monoˡ-< : ∀ (m n p : ℕ)
+  → m < n
+    -------------
+  → m + p < n + p
++-monoˡ-< m n zero m<n rewrite +-comm m zero | +-comm n zero = m<n
++-monoˡ-< m n (suc p) m<n rewrite +-comm m (suc p) | +-comm n (suc p) = +-monoʳ-< (suc p) m n m<n
+
++-mono-< : ∀ (m n p q : ℕ)
+  → m < n
+  → p < q
+    -------------
+  → m + p < n + q
++-mono-< m n p q m<n p<q = <-trans (+-monoˡ-< m n p m<n) (+-monoʳ-< n p q p<q)
 ```
 
 #### Exercise `≤-iff-<` (recommended) {name=leq-iff-less}
@@ -777,7 +799,9 @@ As with inequality, some additional definitions may be required.
 Show that `suc m ≤ n` implies `m < n`, and conversely.
 
 ```
--- Your code goes here
+≤-iff-< : ∀ (m n : ℕ) → suc m ≤ n → m < n
+≤-iff-< zero (suc n) _ = z<s
+≤-iff-< (suc m) (suc n) (s≤s suc-m≤n) = s<s (≤-iff-< m n suc-m≤n)
 ```
 
 #### Exercise `<-trans-revisited` (practice) {name=less-trans-revisited}
