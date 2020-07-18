@@ -1020,33 +1020,76 @@ from ⟨⟩ = zero
 from (x O) = from x * 2
 from (x I) = suc (from x * 2)
 
-data Can : Bin → Set
-
 data One : Bin → Set where
 
-  _I : ∀ {b : Bin} → Can b → One (b I)
+  one : One (⟨⟩ I)
 
-  _O : ∀ {b : Bin} → Can b → One (b O)
+  _I : ∀ {b : Bin} → One b → One (b I)
 
-data Can where
+  _O : ∀ {b : Bin} → One b → One (b O)
+
+data Can : Bin → Set where
 
   zero : Can ⟨⟩
 
   can : ∀ {b : Bin} → One b → Can b
 
-inc-can : ∀ {b : Bin} → Can b → Can (inc b)
 inc-one : ∀ {b : Bin} → One b → One (inc b)
+inc-one one = one O
+inc-one (o I) = inc-one o O
+inc-one (o O) = o I
 
-inc-one (x I) = inc-can x O
-inc-one (x O) = x I
-
-inc-can zero = can (zero I)
+inc-can : ∀ {b : Bin} → Can b → Can (inc b)
+inc-can zero = can one
 inc-can (can x) = can (inc-one x)
 
 can-to : ∀ {n : ℕ} → Can (to n)
 can-to {zero} = zero
 can-to {suc n} = inc-can (can-to {n})
 
+import Relation.Binary.PropositionalEquality as Eq
+open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; _≡⟨_⟩_; _∎)
+
+inc-inc : ∀ (b : Bin) -> Bin
+inc-inc b = inc (inc b)
+
+to-n*2 : ∀ {n : ℕ} → 0 < n → to (n * 2) ≡ to n O
+to-n*2 {suc zero} z<s = refl
+to-n*2 {suc (suc n)} z<s rewrite to-n*2 {suc n} z<s = refl
+-- to-n*2 (suc (suc n)) z<s =
+--   begin
+--     to (suc (suc n) * 2)
+--   ≡⟨⟩
+--     to (suc (suc (suc n * 2)))
+--   ≡⟨⟩
+--     inc (to (suc (suc n * 2)))
+--   ≡⟨⟩
+--     inc (inc (to (suc n * 2)))
+--   ≡⟨ cong inc-inc (to-n*2 (suc n) z<s) ⟩
+--     inc (inc (to (suc n) O))
+--   ≡⟨⟩
+--     to (suc (suc n)) O
+--   ∎
+
+x*2≡x+x : ∀ (x : ℕ) → x * 2 ≡ x + x
+x*2≡x+x zero = refl
+x*2≡x+x (suc x) rewrite x*2≡x+x x | +-comm (suc x) x = refl
+
+0<from-one-b : ∀ {b : Bin} → One b → 0 < from b
+0<from-one-b one = z<s
+0<from-one-b (o I) = z<s
+0<from-one-b {b O} (o O) rewrite x*2≡x+x (from b)
+  = +-mono-< 0 (from b) 0 (from b) (0<from-one-b o) (0<from-one-b o)
+
+one-to-from : ∀ {b : Bin} → One b → to (from b) ≡ b
+one-to-from {b O} (o O) rewrite to-n*2 {from b} (0<from-one-b o) | one-to-from {b} o = refl
+one-to-from one = refl
+one-to-from {b I} (o I) rewrite to-n*2 {from b} (0<from-one-b o) | one-to-from {b} o = refl
+
+can-to-from : ∀ {b : Bin} → Can b → to (from b) ≡ b
+can-to-from {⟨⟩} zero = refl
+can-to-from {b O} (can (x O)) rewrite to-n*2 {from b} (0<from-one-b x) | one-to-from x = refl
+can-to-from {b I} (can x) rewrite to-n*2 {from (b I)} (0<from-one-b x) | one-to-from x = refl
 ```
 
 ## Standard library
