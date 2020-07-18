@@ -1088,7 +1088,7 @@ one-to-from (o I) rewrite to-n*2 (0<from-one-b o) | one-to-from o = refl
 
 can-to-from : ∀ {b : Bin} → Can b → to (from b) ≡ b
 can-to-from zero = refl
-can-to-from (can x) rewrite to-n*2  (0<from-one-b x) | one-to-from x = refl
+can-to-from (can x) rewrite one-to-from x = refl
 ```
 
 ## Standard library
