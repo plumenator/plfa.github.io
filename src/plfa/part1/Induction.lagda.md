@@ -1062,15 +1062,7 @@ for all naturals `m`, `n`, and `p`.
 ```
 ∸-+-assoc : ∀ (m n p : ℕ) → m ∸ n ∸ p ≡ m ∸ (n + p)
 ∸-+-assoc m zero p = refl
--- ∸-+-assoc zero n p rewrite ∸-zero n | ∸-zero p =
---   begin
---     zero
---   ≡⟨ sym (∸-zero (n + p)) ⟩
---     zero ∸ (n + p)
---   ∎
-∸-+-assoc zero n p rewrite ∸-zero n
-                         | ∸-zero p
-                         | ∸-zero (n + p) = refl
+∸-+-assoc zero (suc n) p  rewrite ∸-zero p = refl
 ∸-+-assoc (suc m) (suc n) p rewrite ∸-+-assoc m n p = refl
 ```
 
