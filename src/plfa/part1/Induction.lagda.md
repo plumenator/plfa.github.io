@@ -1093,26 +1093,7 @@ open import Data.Nat using (_^_)
 ^-distribˡ-+-* m zero zero = refl
 ^-distribˡ-+-* m (suc n) p rewrite ^-distribˡ-+-* m n p
                                  | *-assoc m (m ^ n) (m ^ p) = refl
--- ^-distribˡ-+-* m n (suc p) =
---   begin
---     m ^ (n + suc p)
---   ≡⟨ cong (m ^_) (+-comm n (suc p)) ⟩
---     m ^ (suc p + n)
---   ≡⟨⟩
---     m ^ suc (p + n)
---   ≡⟨⟩
---     m * m ^ (p + n)
---   ≡⟨ cong (m *_) (^-distribˡ-+-* m p n) ⟩
---     m * ((m ^ p) * (m ^ n))
---   ≡⟨ sym (*-assoc m (m ^ p) (m ^ n)) ⟩
---     (m ^ suc p) * (m ^ n)
---   ≡⟨ *-comm (m ^ suc p) (m ^ n) ⟩
---     (m ^ n) * (m ^ suc p)
---   ∎
-^-distribˡ-+-* m n (suc p) rewrite +-comm n (suc p)
-                                 | ^-distribˡ-+-* m p n
-                                 | sym (*-assoc m (m ^ p) (m ^ n))
-                                 | *-comm (m ^ n) (m * m ^ p)= refl
+^-distribˡ-+-* m zero (suc p) rewrite +-identityʳ (m * (m ^ p)) = refl
 
 -- mnp : ℕ → ℕ → ℕ → ℕ → ℕ
 -- mnp m n p x = m * x * (n ^ p)
