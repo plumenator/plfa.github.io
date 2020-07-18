@@ -1082,14 +1082,14 @@ x*2≡x+x (suc x) rewrite x*2≡x+x x | +-comm (suc x) x = refl
   = +-mono-< 0 (from b) 0 (from b) (0<from-one-b o) (0<from-one-b o)
 
 one-to-from : ∀ {b : Bin} → One b → to (from b) ≡ b
-one-to-from {b O} (o O) rewrite to-n*2 {from b} (0<from-one-b o) | one-to-from {b} o = refl
+one-to-from (o O) rewrite to-n*2 (0<from-one-b o) | one-to-from o = refl
 one-to-from one = refl
-one-to-from {b I} (o I) rewrite to-n*2 {from b} (0<from-one-b o) | one-to-from {b} o = refl
+one-to-from (o I) rewrite to-n*2 (0<from-one-b o) | one-to-from o = refl
 
 can-to-from : ∀ {b : Bin} → Can b → to (from b) ≡ b
-can-to-from {⟨⟩} zero = refl
-can-to-from {b O} (can (x O)) rewrite to-n*2 {from b} (0<from-one-b x) | one-to-from x = refl
-can-to-from {b I} (can x) rewrite to-n*2 {from (b I)} (0<from-one-b x) | one-to-from x = refl
+can-to-from zero = refl
+can-to-from (can (x O)) rewrite to-n*2 (0<from-one-b x) | one-to-from x = refl
+can-to-from (can x) rewrite to-n*2  (0<from-one-b x) | one-to-from x = refl
 ```
 
 ## Standard library
