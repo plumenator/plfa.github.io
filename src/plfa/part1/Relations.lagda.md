@@ -251,17 +251,29 @@ partial order but not a total order.
 
 #### Exercise `orderings` (practice) {name=orderings}
 
+Stolen from [csams]
+
 Give an example of a preorder that is not a partial order.
 
-```
--- Your code goes here
-```
+    path-exists   : does a path exist between two points?
+    Reflexive     : a path always exists from A to itself.
+    Transitive    : if there's a path from A to B and one from B to C then there's one from A to C.
+    Anti-symmetric: a path from A to B and a path from B to A don't mean A and B are the same place.
+    Total         : paths don't exist between all places.
 
 Give an example of a partial order that is not a total order.
 
-```
--- Your code goes here
-```
+    subset (⊆) (subset, not proper subset)
+    Reflexive     : n ⊆ n                  n is a subset of itself.
+    Transitive    : m ⊆ n ⊆ p              if m is a subset of n and n is a subset of p, then m is a subset of p.
+    Anti-symmetric: m ⊆ n, n ⊆ m → m ≡ n   Two sets that are subsets of each other are equal.
+    Total         : not all sets are subsets of each other.
+
+    divides without remainder
+    Reflexive     : n / n.
+    Transitive    : if m / n and n / p then m / p.
+    Anti-symmetric: if m / n and n / m then m ≡ n.
+    Total         : Not all numbers cleanly divide.
 
 ## Reflexivity
 
@@ -1117,3 +1129,5 @@ This chapter uses the following unicode:
 
 The commands `\^l` and `\^r` give access to a variety of superscript
 leftward and rightward arrows in addition to superscript letters `l` and `r`.
+
+[csams]: https://github.com/csams/plfa.github.io/blob/20fad90b4dc43d08f82e956d71f230ece389d7d1/src/plfa/part1/Relations.lagda.md#exercise-orderings-practice-orderings
