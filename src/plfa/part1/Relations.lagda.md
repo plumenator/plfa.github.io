@@ -670,8 +670,7 @@ open import Data.Nat.Properties using (*-comm)
   → m ≤ n
     -------------
   → m * p ≤ n * p
-*-monoˡ-≤ m n zero m≤n rewrite *-comm m zero = z≤n
-*-monoˡ-≤ m n (suc p) m≤n rewrite *-comm m (suc p) | *-comm n (suc p) = *-monoʳ-≤ (suc p) m n m≤n
+*-monoˡ-≤ m n p m≤n rewrite *-comm m p | *-comm n p = *-monoʳ-≤ p m n m≤n
 
 *-mono-≤ : ∀ (m n p q : ℕ)
   → m ≤ n
