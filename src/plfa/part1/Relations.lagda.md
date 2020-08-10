@@ -663,7 +663,7 @@ open import Data.Nat.Properties using (*-comm)
   → p ≤ q
     -------------
   → n * p ≤ n * q
-*-monoʳ-≤ zero p q p≤q = z≤n
+*-monoʳ-≤ zero p q _ = z≤n
 *-monoʳ-≤ (suc n) p q p≤q = +-mono-≤ p q (n * p) (n * q) p≤q (*-monoʳ-≤ n p q p≤q)
 
 *-monoˡ-≤ : ∀ (m n p : ℕ)
