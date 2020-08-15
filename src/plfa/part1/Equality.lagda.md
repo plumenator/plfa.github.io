@@ -132,6 +132,15 @@ Again, a useful exercise is to carry out an interactive development,
 checking how Agda's knowledge changes as each of the two arguments is
 instantiated.
 
+```
+my-trans : ∀ {A : Set} {x y z : A}
+  → x ≡ y
+  → y ≡ z
+    -----
+  → x ≡ z
+my-trans refl e2 = e2
+```
+
 ## Congruence and substitution {name=cong}
 
 Equality satisfies _congruence_.  If two terms are equal,
