@@ -371,7 +371,159 @@ it to write out an alternative proof that addition is monotonic with
 regard to inequality.  Rewrite all of `+-monoˡ-≤`, `+-monoʳ-≤`, and `+-mono-≤`.
 
 ```
--- Your code goes here
+data _≤_ : ℕ → ℕ → Set where
+
+  z≤n : ∀ {n : ℕ}
+      --------
+    → zero ≤ n
+
+  s≤s : ∀ {m n : ℕ}
+    → m ≤ n
+      -------------
+    → suc m ≤ suc n
+
+infix  4 _≤_
+
+≤-trans : ∀ {m n p : ℕ}
+  → m ≤ n
+  → n ≤ p
+    -----
+  → m ≤ p
+≤-trans z≤n       _          =  z≤n
+≤-trans (s≤s m≤n) (s≤s n≤p)  =  s≤s (≤-trans m≤n n≤p)
+
+≤-refl : ∀ {n : ℕ}
+    -----
+  → n ≤ n
+≤-refl {zero} = z≤n
+≤-refl {suc n} = s≤s ≤-refl
+
+module ≤-Reasoning where
+
+  infix  1 ≤-begin_
+  infixr 2 _≤⟨⟩_ _≤⟨_⟩_
+  infix  3 _≤-∎
+
+  ≤-begin_ : ∀ {x y : ℕ}
+    → x ≤ y
+      -----
+    → x ≤ y
+  ≤-begin x≤y  =  x≤y
+
+  _≤⟨⟩_ : ∀ (x : ℕ) {y : ℕ}
+    → x ≤ y
+      -----
+    → x ≤ y
+  x ≤⟨⟩ x≤y  =  x≤y
+
+  _≤⟨_⟩_ : ∀ (x : ℕ) {y z : ℕ}
+    → x ≤ y
+    → y ≤ z
+      -----
+    → x ≤ z
+  x ≤⟨ x≤y ⟩ y≤z  =  ≤-trans x≤y y≤z
+
+  _≤-∎ : ∀ (x : ℕ)
+      -----
+    → x ≤ x
+  x ≤-∎  =  ≤-refl
+
+open ≤-Reasoning
+
++-monoʳ-≤ : ∀ (n p q : ℕ)
+  → p ≤ q
+    -------------
+  → n + p ≤ n + q
++-monoʳ-≤ zero p q p≤q =
+  ≤-begin
+    zero + p
+  ≤⟨⟩
+    p
+  ≤⟨ p≤q ⟩
+    q
+  ≤-∎
+
++-monoʳ-≤ (suc n) p q p≤q =
+  ≤-begin
+    suc n + p
+  ≤⟨⟩
+    suc (n + p)
+  ≤⟨ s≤s (+-monoʳ-≤ n p q p≤q) ⟩
+    suc (n + q)
+  ≤-∎
+
++-identity-≤ : ∀ (m : ℕ) → m + zero ≤ m
++-identity-≤ zero = z≤n
++-identity-≤ (suc m) =
+  ≤-begin
+    suc m + zero
+  ≤⟨⟩
+    suc (m + zero)
+  ≤⟨ s≤s (+-identity-≤ m) ⟩
+    suc m
+  ≤-∎
+
++-suc-≤ : ∀ (m n : ℕ) → m + suc n ≤ suc (m + n)
++-suc-≤ zero n = ≤-refl
++-suc-≤ (suc m) n =
+  ≤-begin
+    suc m + suc n
+  ≤⟨⟩
+    suc (m + suc n)
+  ≤⟨ s≤s (+-suc-≤ m n) ⟩
+    suc (suc (m + n))
+  ≤⟨⟩
+    suc (suc m + n)
+  ≤-∎
+
++-comm-≤ : ∀ (m n : ℕ) → m + n ≤ n + m
++-comm-≤ m zero =
+  ≤-begin
+    m + zero
+  ≤⟨ +-identity-≤ m ⟩
+    m
+  ≤⟨⟩
+    zero + m
+  ≤-∎
+
++-comm-≤ m (suc n) =
+  ≤-begin
+    m + suc n
+  ≤⟨ +-suc-≤ m n ⟩
+    suc (m + n)
+  ≤⟨ s≤s (+-comm-≤ m n) ⟩
+    suc (n + m)
+  ≤-∎
+
++-monoˡ-≤ : ∀ (m n p : ℕ)
+  → m ≤ n
+    -------------
+  → m + p ≤ n + p
+
++-monoˡ-≤ m n p m≤n =
+  ≤-begin
+    m + p
+  ≤⟨ +-comm-≤ m p ⟩
+    p + m
+  ≤⟨ +-monoʳ-≤ p m n m≤n ⟩
+    p + n
+  ≤⟨ +-comm-≤ p n ⟩
+    n + p
+  ≤-∎
+
++-mono-≤ : ∀ (m n p q : ℕ)
+  → m ≤ n
+  → p ≤ q
+    -------------
+  → m + p ≤ n + q
++-mono-≤ m n p q m≤n p≤q =
+  ≤-begin
+    m + p
+  ≤⟨ +-monoˡ-≤ m n p m≤n ⟩
+    n + p
+  ≤⟨ +-monoʳ-≤ n p q p≤q ⟩
+    n + q
+  ≤-∎
 ```
 
 
