@@ -648,6 +648,15 @@ even-comm′ : ∀ (m n : ℕ)
   → even (n + m)
 even-comm′ m n ev with   m + n  | +-comm m n
 ...                  | .(n + m) | refl       = ev
+
+even-comm′′ : ∀ (m n : ℕ)
+  → even (m + n)
+    ------------
+  → even (n + m)
+even-comm′′ m n ev = helper (m + n) ev (+-comm m n)
+  where
+    helper : ∀ {nm : ℕ} → (mn : ℕ) → even mn → mn ≡ nm → even nm
+    helper {nm} .(nm) ev refl = ev
 ```
 In general, one can follow `with` by any number of expressions,
 separated by bars, where each following equation has the same number
