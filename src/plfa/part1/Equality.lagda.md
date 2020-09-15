@@ -647,7 +647,9 @@ even-comm′ : ∀ (m n : ℕ)
     ------------
   → even (n + m)
 even-comm′ m n ev with   m + n  | +-comm m n
-...                  | .(n + m) | refl       = ev
+--...                     | x     | y = {!y!}
+-- even-comm′ m n ev | .(n + m) | refl = {!!}
+even-comm′ m n ev | .(n + m) | refl = ev
 
 even-comm′′ : ∀ (m n : ℕ)
   → even (m + n)
