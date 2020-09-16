@@ -127,6 +127,19 @@ extensionality:
 ```
 same : _+′_ ≡ _+_
 same = extensionality (λ m → extensionality (λ n → same-app m n))
+
+same′ : _+′_ ≡ _+_
+-- same′ = {!!}
+-- same′ = {!extensionality ?!}
+-- same′ = extensionality {!!}
+-- same′ = extensionality {!λ x → ?!}
+-- same′ = extensionality λ x → {!!}
+-- same′ = extensionality λ x → {!extensionality ?!}
+-- same′ = extensionality λ x → extensionality {!!}
+-- same′ = extensionality λ x → extensionality {!λ y → ?!}
+-- same′ = extensionality λ x → extensionality λ y → {!!}
+-- same′ = extensionality λ x → extensionality λ y → {!same-app x y!}
+same′ = extensionality λ x → extensionality λ y → same-app x y
 ```
 We occasionally need to postulate extensionality in what follows.
 
@@ -439,15 +452,16 @@ open ≲-Reasoning
 
 Show that every isomorphism implies an embedding.
 ```
-postulate
-  ≃-implies-≲ : ∀ {A B : Set}
-    → A ≃ B
-      -----
-    → A ≲ B
-```
-
-```
--- Your code goes here
+≃-implies-≲ : ∀ {A B : Set}
+  → A ≃ B
+    -----
+  → A ≲ B
+≃-implies-≲ A≃B =
+  record
+    { to = to A≃B
+    ; from = from A≃B
+    ; from∘to = from∘to A≃B
+    }
 ```
 
 #### Exercise `_⇔_` (practice) {name=iff}
