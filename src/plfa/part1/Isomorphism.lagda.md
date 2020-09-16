@@ -476,6 +476,8 @@ record _⇔_ (A B : Set) : Set where
 Show that equivalence is reflexive, symmetric, and transitive.
 
 ```
+open _⇔_
+
 ⇔-refl : ∀ {A : Set}
     -----
   → A ⇔ A
@@ -491,8 +493,8 @@ Show that equivalence is reflexive, symmetric, and transitive.
   → B ⇔ A
 ⇔-sym A⇔B =
   record
-    { to      = _⇔_.from A⇔B
-    ; from    = _⇔_.to   A⇔B
+    { to      = from A⇔B
+    ; from    = to   A⇔B
     }
 
 ⇔-trans : ∀ {A B C : Set}
@@ -502,8 +504,8 @@ Show that equivalence is reflexive, symmetric, and transitive.
   → A ⇔ C
 ⇔-trans A⇔B B⇔C =
   record
-    { to       = _⇔_.to   B⇔C ∘ _⇔_.to   A⇔B
-    ; from     = _⇔_.from A⇔B ∘ _⇔_.from B⇔C
+    { to       = to   B⇔C ∘ to   A⇔B
+    ; from     = from A⇔B ∘ from B⇔C
     }
 ```
 
