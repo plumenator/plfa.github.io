@@ -526,10 +526,49 @@ which satisfy the following property:
 
 Using the above, establish that there is an embedding of `ℕ` into `Bin`.
 ```
--- Your code goes here
+data Bin : Set where
+  ⟨⟩ : Bin
+  _O : Bin → Bin
+  _I : Bin → Bin
+
+inc : Bin → Bin
+inc ⟨⟩ = ⟨⟩ I
+inc (x O) = x I
+inc (x I) = inc x O
+
+bin-to : ℕ → Bin
+bin-to zero = ⟨⟩
+bin-to (suc x) = inc (bin-to x)
+
+open import Data.Nat using (_*_)
+
+bin-from : Bin → ℕ
+bin-from ⟨⟩ = zero
+bin-from (x O) = bin-from x * 2
+bin-from (x I) = suc (bin-from x * 2)
+
+from-inc-suc-from : ∀ (b : Bin) → bin-from (inc b) ≡ suc (bin-from b)
+from-inc-suc-from ⟨⟩ = refl
+from-inc-suc-from (b O) = refl
+from-inc-suc-from (b I) rewrite from-inc-suc-from b = refl
+
+bin-from∘bin-to : ∀ (n : ℕ) → bin-from (bin-to n) ≡ n
+bin-from∘bin-to zero = refl
+bin-from∘bin-to (suc n) rewrite from-inc-suc-from (bin-to n)
+                      | bin-from∘bin-to n = refl
+
+ℕ≲Bin : ℕ ≲ Bin
+ℕ≲Bin =
+  record
+    { to      = bin-to
+    ; from    = bin-from
+    ; from∘to = bin-from∘bin-to
+    }
 ```
 
 Why do `to` and `from` not form an isomorphism?
+
+Answer: Because (bin-to ∘ bin-from) is not the identity function
 
 ## Standard library
 
