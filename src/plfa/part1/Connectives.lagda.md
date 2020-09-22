@@ -241,7 +241,22 @@ Show that `A ⇔ B` as defined [earlier](/Isomorphism/#iff)
 is isomorphic to `(A → B) × (B → A)`.
 
 ```
--- Your code goes here
+open import plfa.part1.Isomorphism using (_⇔_)
+open _⇔_
+
+⇔≅x : ∀ {A B : Set} → A ⇔ B ≃ (A → B) × (B → A)
+⇔≅x =
+  record
+    { to      = λ { x → ⟨ to x , from x ⟩ }
+    ; from    = λ { x →
+                    record
+                      { to      = proj₁ x
+                      ; from    = proj₂ x
+                      }
+                  }
+    ; from∘to = λ { x → refl }
+    ; to∘from = λ { ⟨ x , y ⟩ → refl}
+    }
 ```
 
 
