@@ -469,7 +469,14 @@ commutative and associative _up to isomorphism_.
 Show sum is commutative up to isomorphism.
 
 ```
--- Your code goes here
+⊎-comm : ∀ {A B : Set} → A ⊎ B ≃ B ⊎ A
+⊎-comm =
+  record
+    { to       =  λ { (inj₁ x) → inj₂ x ; (inj₂ x) → inj₁ x }
+    ; from     =  λ { (inj₁ x) → inj₂ x ; (inj₂ x) → inj₁ x }
+    ; from∘to  =  λ { (inj₁ x) → refl ; (inj₂ x) → refl }
+    ; to∘from  =  λ { (inj₁ x) → refl ; (inj₂ x) → refl }
+    }
 ```
 
 #### Exercise `⊎-assoc` (practice)
