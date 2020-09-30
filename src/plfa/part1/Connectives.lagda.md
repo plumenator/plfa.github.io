@@ -484,7 +484,14 @@ Show sum is commutative up to isomorphism.
 Show sum is associative up to isomorphism.
 
 ```
--- Your code goes here
+⊎-assoc : ∀ {A B C : Set} → (A ⊎ B) ⊎ C ≃ A ⊎ (B ⊎ C)
+⊎-assoc =
+  record
+    { to      = λ { (inj₁ (inj₁ x)) → inj₁ x ; (inj₁ (inj₂ x)) → inj₂ (inj₁ x) ; (inj₂ x) → inj₂ (inj₂ x) }
+    ; from    = λ { (inj₁ x) → inj₁ (inj₁ x) ; (inj₂ (inj₁ x)) → inj₁ (inj₂ x) ; (inj₂ (inj₂ x)) → inj₂ x }
+    ; from∘to = λ { (inj₁ (inj₁ x)) → refl ; (inj₁ (inj₂ x)) → refl ; (inj₂ x) → refl }
+    ; to∘from = λ { (inj₁ x) → refl ; (inj₂ (inj₁ x)) → refl ; (inj₂ (inj₂ x)) → refl }
+    }
 ```
 
 ## False is empty
