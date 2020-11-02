@@ -568,7 +568,7 @@ bin-from∘bin-to (suc n) rewrite from-inc-suc-from (bin-to n)
 
 Why do `to` and `from` not form an isomorphism?
 
-Answer: Because (bin-to ∘ bin-from) is not the identity function
+Answer: Because of leading zeros, multiple members of Bin would map to a member in ℕ
 
 ## Standard library
 
