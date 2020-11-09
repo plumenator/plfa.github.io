@@ -569,7 +569,14 @@ Show empty is the left identity of sums up to isomorphism.
 Show empty is the right identity of sums up to isomorphism.
 
 ```
--- Your code goes here
+⊥-identityʳ : ∀ {A : Set} → A ⊎ ⊥ ≃ A
+⊥-identityʳ =
+    record
+    { to      = λ{ (inj₁ x) → x }
+    ; from    = λ{ x → inj₁ x }
+    ; from∘to = λ{ (inj₁ x) → refl}
+    ; to∘from = λ{ x → refl }
+    }
 ```
 
 ## Implication is function {name=implication}
