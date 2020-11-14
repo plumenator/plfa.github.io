@@ -800,16 +800,22 @@ one of these laws is "more true" than the other.
 
 Show that the following property holds:
 ```
-postulate
-  ⊎-weak-× : ∀ {A B C : Set} → (A ⊎ B) × C → A ⊎ (B × C)
+⊎-weak-× : ∀ {A B C : Set} → (A ⊎ B) × C → A ⊎ (B × C)
 ```
 This is called a _weak distributive law_. Give the corresponding
 distributive law, and explain how it relates to the weak version.
 
 ```
--- Your code goes here
+⊎-weak-× ⟨ inj₁ x , y ⟩ = inj₁ x
+⊎-weak-× ⟨ inj₂ x , y ⟩ = inj₂ ⟨ x , y ⟩
 ```
 
+Explanation:
+
+  (A ⊎ B) × C → A ⊎ (B × C)
+  (A ⊎ B) × C → (A × C) ⊎ (B × C)
+
+  ???
 
 #### Exercise `⊎×-implies-×⊎` (practice)
 
