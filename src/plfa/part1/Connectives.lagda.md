@@ -821,14 +821,24 @@ Explanation:
 
 Show that a disjunct of conjuncts implies a conjunct of disjuncts:
 ```
-postulate
-  ⊎×-implies-×⊎ : ∀ {A B C D : Set} → (A × B) ⊎ (C × D) → (A ⊎ C) × (B ⊎ D)
+⊎×-implies-×⊎ : ∀ {A B C D : Set} → (A × B) ⊎ (C × D) → (A ⊎ C) × (B ⊎ D)
 ```
 Does the converse hold? If so, prove; if not, give a counterexample.
 
 ```
--- Your code goes here
+⊎×-implies-×⊎ (inj₁ ⟨ x , y ⟩) = ⟨ inj₁ x , inj₁ y ⟩
+⊎×-implies-×⊎ (inj₂ ⟨ x , y ⟩) = ⟨ inj₂ x , inj₂ y ⟩
 ```
+
+```
+-- ×⊎-implies-⊎× : ∀ {A B C D : Set} → (A ⊎ C) × (B ⊎ D) → (A × B) ⊎ (C × D)
+-- ×⊎-implies-⊎× ⟨ inj₁ x , inj₁ y ⟩ = inj₁ ⟨ x , y ⟩
+-- ×⊎-implies-⊎× ⟨ inj₁ x , inj₂ y ⟩ = {!!}
+-- ×⊎-implies-⊎× ⟨ inj₂ x , inj₁ y ⟩ = {!!}
+-- ×⊎-implies-⊎× ⟨ inj₂ x , inj₂ y ⟩ = inj₂ ⟨ x , y ⟩
+```
+
+The converse doesn't hold because if C and D are ⊥, the RHS would be empty, but the LHS wouldn't. Copied this shamelessly from https://github.com/gdahia/plfa-exercises/blob/master/plfa/part1/Connectives.agda#L302
 
 
 ## Standard library
