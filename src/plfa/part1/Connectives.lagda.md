@@ -729,11 +729,28 @@ and the rule `η-×` for products:
 ```
 →-distrib-× : ∀ {A B C : Set} → (A → B × C) ≃ (A → B) × (A → C)
 →-distrib-× =
+  -- record
+  --   { to      = λ{ f → ⟨ proj₁ ∘ f , proj₂ ∘ f ⟩ }
+  --   ; from    = λ{ ⟨ g , h ⟩ → λ x → ⟨ g x , h x ⟩ }
+  --   ; from∘to = λ{ f → extensionality λ{ x → η-× (f x) } }
+  --   ; to∘from = λ{ ⟨ g , h ⟩ → refl }
+  --   }
   record
-    { to      = λ{ f → ⟨ proj₁ ∘ f , proj₂ ∘ f ⟩ }
-    ; from    = λ{ ⟨ g , h ⟩ → λ x → ⟨ g x , h x ⟩ }
-    ; from∘to = λ{ f → extensionality λ{ x → η-× (f x) } }
-    ; to∘from = λ{ ⟨ g , h ⟩ → refl }
+    { to      = λ {f → ⟨ (λ x → proj₁ (f x)) , (λ x → proj₂ (f x)) ⟩}
+    ; from    = λ f x → ⟨ (proj₁ f) x , (proj₂ f) x ⟩
+    ; from∘to = λ f → extensionality λ x → η-× (f x) -- The intuition
+                                                     -- needed to
+                                                     -- apply
+                                                     -- extensionality
+                                                     -- is based on
+                                                     -- the fact that
+                                                     -- f is a
+                                                     -- function and
+                                                     -- hence, the
+                                                     -- goal is an
+                                                     -- equality of
+                                                     -- functions
+    ; to∘from = λ { ⟨ f , g ⟩ → refl}
     }
 ```
 
