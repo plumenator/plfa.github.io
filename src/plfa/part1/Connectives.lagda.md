@@ -776,23 +776,37 @@ this fact is similar in structure to our previous results:
                  ; (inj₂ ⟨ y , z ⟩) → refl
                  }
     }
+
 ```
 
 Sums do not distribute over products up to isomorphism, but it is an embedding:
 ```
 ⊎-distrib-× : ∀ {A B C : Set} → (A × B) ⊎ C ≲ (A ⊎ C) × (B ⊎ C)
 ⊎-distrib-× =
+  -- record
+  --   { to      = λ{ (inj₁ ⟨ x , y ⟩) → ⟨ inj₁ x , inj₁ y ⟩
+  --                ; (inj₂ z)         → ⟨ inj₂ z , inj₂ z ⟩
+  --                }
+  --   ; from    = λ{ ⟨ inj₁ x , inj₁ y ⟩ → (inj₁ ⟨ x , y ⟩)
+  --                ; ⟨ inj₁ x , inj₂ z ⟩ → (inj₂ z)
+  --                ; ⟨ inj₂ z , _      ⟩ → (inj₂ z)
+  --                }
+  --   ; from∘to = λ{ (inj₁ ⟨ x , y ⟩) → refl
+  --                ; (inj₂ z)         → refl
+  --                }
+  --   }
   record
-    { to      = λ{ (inj₁ ⟨ x , y ⟩) → ⟨ inj₁ x , inj₁ y ⟩
-                 ; (inj₂ z)         → ⟨ inj₂ z , inj₂ z ⟩
-                 }
-    ; from    = λ{ ⟨ inj₁ x , inj₁ y ⟩ → (inj₁ ⟨ x , y ⟩)
-                 ; ⟨ inj₁ x , inj₂ z ⟩ → (inj₂ z)
-                 ; ⟨ inj₂ z , _      ⟩ → (inj₂ z)
-                 }
-    ; from∘to = λ{ (inj₁ ⟨ x , y ⟩) → refl
-                 ; (inj₂ z)         → refl
-                 }
+    { to = λ { (inj₁ ⟨ x , y ⟩) → ⟨ (inj₁ x) , (inj₁ y) ⟩
+             ; (inj₂ z) → ⟨ inj₂ z , inj₂ z ⟩
+             }
+    ; from = λ { ⟨ inj₁ x , inj₁ y ⟩ → inj₁ ⟨ x , y ⟩
+               ; ⟨ inj₁ x , inj₂ z ⟩ → inj₂ z
+               ; ⟨ inj₂ z , inj₁ _ ⟩ → inj₂ z
+               ; ⟨ inj₂ z , inj₂ z′ ⟩ → inj₂ z′
+               }
+    ; from∘to = λ { (inj₁ ⟨ x , y ⟩) → refl
+                  ; (inj₂ x) → refl
+                  }
     }
 ```
 Note that there is a choice in how we write the `from` function.
