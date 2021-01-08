@@ -870,8 +870,18 @@ Does the converse hold? If so, prove; if not, give a counterexample.
 -- ×⊎-implies-⊎× ⟨ inj₂ x , inj₂ y ⟩ = inj₂ ⟨ x , y ⟩
 ```
 
-The converse doesn't hold because if C and D are ⊥, the RHS would be empty, but the LHS wouldn't. Copied this shamelessly from https://github.com/gdahia/plfa-exercises/blob/master/plfa/part1/Connectives.agda#L302
+```
+×⊎-implies-⊎× : ∀ {A B C D : Set} → (A ⊎ C) × (B ⊎ D) → (A × B) ⊎ (C × D)
+×⊎-implies-⊎× ⟨ inj₁ a , inj₁ b ⟩ = inj₁ ⟨ a , b ⟩
+×⊎-implies-⊎× ⟨ inj₁ a , inj₂ d ⟩ = {!!}
+×⊎-implies-⊎× ⟨ inj₂ c , inj₁ b ⟩ = {!!}
+×⊎-implies-⊎× ⟨ inj₂ c , inj₂ d ⟩ = inj₂ ⟨ c , d ⟩
+```
 
+The converse doesn't hold because if B and C are ⊥, the RHS would be
+empty, but the LHS wouldn't. Copied this shamelessly (and corrected)
+from
+[here](https://github.com/gdahia/plfa-exercises/blob/master/plfa/part1/Connectives.agda#L302)
 
 ## Standard library
 
