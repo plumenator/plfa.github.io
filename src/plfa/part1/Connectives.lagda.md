@@ -837,16 +837,17 @@ This is called a _weak distributive law_. Give the corresponding
 distributive law, and explain how it relates to the weak version.
 
 ```
-⊎-weak-× ⟨ inj₁ x , y ⟩ = inj₁ x
-⊎-weak-× ⟨ inj₂ x , y ⟩ = inj₂ ⟨ x , y ⟩
+⊎-weak-× ⟨ inj₁ x , z ⟩ = inj₁ x
+⊎-weak-× ⟨ inj₂ y , z ⟩ = inj₂ ⟨ y , z ⟩
 ```
 
 Explanation:
 
-  (A ⊎ B) × C → A ⊎ (B × C)
+  (A ⊎ B) × C → A       ⊎ (B × C)
   (A ⊎ B) × C → (A × C) ⊎ (B × C)
 
-  ???
+  The weak law is not an equivalence, only a one-way
+  implication. Hence it's at best an embedding.
 
 #### Exercise `⊎×-implies-×⊎` (practice)
 
