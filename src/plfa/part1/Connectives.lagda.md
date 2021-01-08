@@ -862,20 +862,13 @@ Does the converse hold? If so, prove; if not, give a counterexample.
 ⊎×-implies-×⊎ (inj₂ ⟨ c , d ⟩) = ⟨ inj₂ c , inj₂ d ⟩
 ```
 
-```
--- ×⊎-implies-⊎× : ∀ {A B C D : Set} → (A ⊎ C) × (B ⊎ D) → (A × B) ⊎ (C × D)
--- ×⊎-implies-⊎× ⟨ inj₁ x , inj₁ y ⟩ = inj₁ ⟨ x , y ⟩
--- ×⊎-implies-⊎× ⟨ inj₁ x , inj₂ y ⟩ = {!!}
--- ×⊎-implies-⊎× ⟨ inj₂ x , inj₁ y ⟩ = {!!}
--- ×⊎-implies-⊎× ⟨ inj₂ x , inj₂ y ⟩ = inj₂ ⟨ x , y ⟩
-```
 
 ```
-×⊎-implies-⊎× : ∀ {A B C D : Set} → (A ⊎ C) × (B ⊎ D) → (A × B) ⊎ (C × D)
-×⊎-implies-⊎× ⟨ inj₁ a , inj₁ b ⟩ = inj₁ ⟨ a , b ⟩
-×⊎-implies-⊎× ⟨ inj₁ a , inj₂ d ⟩ = {!!}
-×⊎-implies-⊎× ⟨ inj₂ c , inj₁ b ⟩ = {!!}
-×⊎-implies-⊎× ⟨ inj₂ c , inj₂ d ⟩ = inj₂ ⟨ c , d ⟩
+-- ×⊎-implies-⊎× : ∀ {A B C D : Set} → (A ⊎ C) × (B ⊎ D) → (A × B) ⊎ (C × D)
+-- ×⊎-implies-⊎× ⟨ inj₁ a , inj₁ b ⟩ = inj₁ ⟨ a , b ⟩
+-- ×⊎-implies-⊎× ⟨ inj₁ a , inj₂ d ⟩ = {!!}
+-- ×⊎-implies-⊎× ⟨ inj₂ c , inj₁ b ⟩ = {!!}
+-- ×⊎-implies-⊎× ⟨ inj₂ c , inj₂ d ⟩ = inj₂ ⟨ c , d ⟩
 ```
 
 The converse doesn't hold because if B and C are ⊥, the RHS would be
