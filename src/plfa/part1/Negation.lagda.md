@@ -193,7 +193,11 @@ Using negation, show that
 is irreflexive, that is, `n < n` holds for no `n`.
 
 ```
--- Your code goes here
+open import plfa.part1.Relations using (_<_; s<s; z<s)
+
+<-irreflexive : ∀ {n : ℕ} → ¬ n < n
+-- you just cannot construct z<z (z<s takes zero and suc n)
+<-irreflexive (s<s n<n) = <-irreflexive n<n
 ```
 
 
