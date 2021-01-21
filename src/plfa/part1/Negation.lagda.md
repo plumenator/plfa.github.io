@@ -268,7 +268,26 @@ version of De Morgan's Law.
 This result is an easy consequence of something we've proved previously.
 
 ```
--- Your code goes here
+open import Data.Product using (_,_; proj₁; proj₂)
+
+⊎-dual-× : ∀ {A B : Set} → ¬ (A ⊎ B) ≃ (¬ A) × (¬ B)
+⊎-dual-× =
+  record
+    { to = λ ¬a⊎b → (λ a → ¬a⊎b (inj₁ a)) , λ b → ¬a⊎b (inj₂ b)
+    ; from = λ { ¬a×¬b (inj₁ a) → proj₁ ¬a×¬b a
+               ; ¬a×¬b (inj₂ b) → proj₂ ¬a×¬b b
+               }
+    ; from∘to = λ { ¬a⊎b → extensionality λ { (inj₁ x) → refl
+                                            ; (inj₂ y) → refl
+                                            }
+                  }
+    ; to∘from = λ ¬a×¬b → refl
+    }
+
+import plfa.part1.Connectives as C
+
+⊎-dual-×′ : ∀ {A B : Set} → (A C.⊎ B → ⊥) ≃ (A → ⊥) C.× (B → ⊥)
+⊎-dual-×′ = C.→-distrib-⊎
 ```
 
 
