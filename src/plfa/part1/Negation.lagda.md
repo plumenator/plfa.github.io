@@ -215,7 +215,47 @@ Here "exactly one" means that not only one of the three must hold,
 but that when one holds the negation of the other two must also hold.
 
 ```
--- Your code goes here
+open import Relation.Binary.PropositionalEquality using (cong)
+
+data Trichotomy (m n : ℕ) : Set where
+  forward :
+      m < n
+    → ¬ n < m
+    → m ≢ n
+      ---------
+    → Trichotomy m n
+
+  flipped :
+      n < m
+    → ¬ m < n
+    → m ≢ n
+      ---------
+    → Trichotomy m n
+
+  equal :
+      m ≡ n
+    → ¬ m < n
+    → ¬ n < m
+      ---------
+    → Trichotomy m n
+
+<-trichotomy : ∀ (m n : ℕ) → Trichotomy m n
+<-trichotomy zero zero = equal refl (λ ()) λ ()
+<-trichotomy zero (suc n) = forward z<s (λ ()) (λ ())
+<-trichotomy (suc m) zero = flipped z<s (λ ()) (λ ())
+<-trichotomy (suc m) (suc n) with <-trichotomy m n
+... | forward m<n ¬n<m m≢n =
+              forward (s<s m<n)
+                      (λ {(s<s n<m) → ¬n<m n<m})
+                      λ {refl → m≢n refl}
+... | flipped n<m ¬m<n m≢n =
+              flipped (s<s n<m)
+                      (λ {(s<s m<n) → ¬m<n m<n})
+                      λ {refl → m≢n refl}
+... | equal m≡n ¬m<n ¬n<m  =
+              equal (cong suc m≡n)
+                    (λ {(s<s m<n) → ¬m<n m<n})
+                    λ {(s<s n<m) → ¬n<m n<m}
 ```
 
 #### Exercise `⊎-dual-×` (recommended)
