@@ -298,7 +298,14 @@ Do we also have the following?
 If so, prove; if not, can you give a relation weaker than
 isomorphism that relates the two sides?
 
+Answer: Only the `from` part of the isomorphism holds. It's also
+interesting to note that there's a progression in strength from
+implication to equivalence to embedding to isomorphism.
 
+```
+⊎-x : ∀ {A B : Set} → ¬ A ⊎ ¬ B → ¬ (A × B)
+⊎-x = λ { (inj₁ ¬a) (a , _) → ¬a a ; (inj₂ ¬b) (_ , b) → ¬b b}
+```
 ## Intuitive and Classical logic
 
 In Gilbert and Sullivan's _The Gondoliers_, Casilda is told that
