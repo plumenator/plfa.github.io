@@ -244,6 +244,7 @@ data Trichotomy (m n : ℕ) : Set where
 <-trichotomy zero (suc n) = forward z<s (λ ()) (λ ())
 <-trichotomy (suc m) zero = flipped z<s (λ ()) (λ ())
 <-trichotomy (suc m) (suc n) with <-trichotomy m n
+-- TODO: why is the type of m≢n m ≢ m?
 ... | forward m<n ¬n<m m≢n =
               forward (s<s m<n)
                       (λ {(s<s n<m) → ¬n<m n<m})
