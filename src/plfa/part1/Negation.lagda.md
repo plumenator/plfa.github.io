@@ -177,7 +177,7 @@ is no `x` in their domain, so the equality holds trivially.
 Indeed, we can show any two proofs of a negation are equal:
 ```
 assimilation : ∀ {A : Set} (¬x ¬x′ : ¬ A) → ¬x ≡ ¬x′
-assimilation ¬x ¬x′ = extensionality (λ x → ⊥-elim (¬x x))
+assimilation ¬x ¬x′ = extensionality (λ x → ⊥-elim (¬x′ x))
 ```
 Evidence for `¬ A` implies that any evidence of `A`
 immediately leads to a contradiction.  But extensionality
@@ -452,7 +452,80 @@ Consider the following principles:
 Show that each of these implies all the others.
 
 ```
--- Your code goes here
+em→dne : (∀ {A : Set} → A ⊎ ¬ A) → ∀ {A : Set} → ¬ ¬ A → A
+em→dne em ¬¬a with em
+em→dne em ¬¬a | inj₁ a = a
+em→dne em ¬¬a | inj₂ ¬a = ⊥-elim (¬¬a ¬a)
+
+em→pierce : (∀ {A : Set} → A ⊎ ¬ A) → ∀ {A B : Set} → ((A → B) → A) → A
+em→pierce em aba with em
+em→pierce em aba | inj₁ a = a
+em→pierce em aba | inj₂ ¬a = aba (λ a → ⊥-elim (¬a a))
+
+em→impl-disj : (∀ {A : Set} → A ⊎ ¬ A) → ∀ {A B : Set} → (A → B) → ¬ A ⊎ B
+em→impl-disj em ab with em
+em→impl-disj em ab | inj₁ a = inj₂ (ab a)
+em→impl-disj em ab | inj₂ ¬a = inj₁ ¬a
+
+em→demorgan : (∀ {A : Set} → A ⊎ ¬ A) → ∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B
+em→demorgan em ¬¬a×¬b with em
+em→demorgan em ¬¬a×¬b | inj₁ a = inj₁ a
+em→demorgan em ¬¬a×¬b | inj₂ ¬a with em
+em→demorgan em ¬¬a×¬b | inj₂ ¬a | inj₁ b = inj₂ b
+em→demorgan em ¬¬a×¬b | inj₂ ¬a | inj₂ ¬b = ⊥-elim (¬¬a×¬b (¬a , ¬b))
+
+dne→em : (∀ {A : Set} → ¬ ¬ A → A) → ∀ {A : Set} → A ⊎ ¬ A
+dne→em dne = dne em-irrefutable
+-- dne→em dne = dne λ z → z (inj₁ (dne (λ z₁ → z (inj₂ z₁))))
+
+dne→pierce : (∀ {A : Set} → ¬ ¬ A → A) → ∀ {A B : Set} → ((A → B) → A) → A
+dne→pierce dne = em→pierce (dne→em dne)
+
+dne→impl-disj : (∀ {A : Set} → ¬ ¬ A → A) → ∀ {A B : Set} → (A → B) → ¬ A ⊎ B
+dne→impl-disj dne = em→impl-disj (dne→em dne)
+
+dne→demorgan : (∀ {A : Set} → ¬ ¬ A → A) → ∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B
+dne→demorgan dne = em→demorgan (dne→em dne)
+
+pierce→em : (∀ {A B : Set} → ((A → B) → A) → A) → ∀ {A : Set} → A ⊎ ¬ A
+pierce→em pierce = pierce (λ z → inj₂ (λ x → z (inj₁ x)))
+
+pierce→dne : (∀ {A B : Set} → ((A → B) → A) → A) → ∀ {A : Set} → ¬ ¬ A → A
+pierce→dne pierce = em→dne (pierce→em pierce)
+
+pierce→impl-disj : (∀ {A B : Set} → ((A → B) → A) → A) → ∀ {A B : Set} → (A → B) → ¬ A ⊎ B
+pierce→impl-disj pierce = em→impl-disj (pierce→em pierce)
+
+pierce→demorgan : (∀ {A B : Set} → ((A → B) → A) → A) → ∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B
+pierce→demorgan pierce = em→demorgan (pierce→em pierce)
+
+⊍-symmetry : ∀ {A : Set} → ¬ A ⊎ A → A ⊎ ¬ A
+⊍-symmetry (inj₁ ¬x) = inj₂ ¬x
+⊍-symmetry (inj₂ x) = inj₁ x
+
+impl-disj→em : (∀ {A B : Set} → (A → B) → ¬ A ⊎ B) → ∀ {A : Set} → A ⊎ ¬ A
+impl-disj→em impl-disj = ⊍-symmetry (impl-disj (λ a → a))
+
+impl-disj→dne : (∀ {A B : Set} → (A → B) → ¬ A ⊎ B) → ∀ {A : Set} → ¬ ¬ A → A
+impl-disj→dne impl-disj = em→dne (impl-disj→em impl-disj)
+
+impl-disj→pierce : (∀ {A B : Set} → (A → B) → ¬ A ⊎ B) → ∀ {A B : Set} → ((A → B) → A) → A
+impl-disj→pierce impl-disj = em→pierce (impl-disj→em impl-disj)
+
+impl-disj→demorgan : (∀ {A B : Set} → (A → B) → ¬ A ⊎ B) → ∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B
+impl-disj→demorgan impl-disj  = em→demorgan (impl-disj→em impl-disj)
+
+demorgan→em : (∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B) → {A : Set} → A ⊎ ¬ A
+demorgan→em demorgan = demorgan (λ ¬a×¬¬a → proj₂ ¬a×¬¬a (proj₁ ¬a×¬¬a))
+
+demorgan→dne : (∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B) → {A : Set} → ¬ ¬ A → A
+demorgan→dne demorgan = em→dne (demorgan→em demorgan)
+
+demorgan→pierce : (∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B) → {A B : Set} → ((A → B) → A) → A
+demorgan→pierce demorgan = em→pierce (demorgan→em demorgan)
+
+demorgan→impl-disj : (∀ {A B : Set} → ¬ (¬ A × ¬ B) → A ⊎ B) → {A B : Set} → (A → B) → ¬ A ⊎ B
+demorgan→impl-disj demorgan = em→impl-disj (demorgan→em demorgan)
 ```
 
 
@@ -467,7 +540,17 @@ Show that any negated formula is stable, and that the conjunction
 of two stable formulas is stable.
 
 ```
--- Your code goes here
+neg-stable : ∀ {A : Set} → Stable (¬ A)
+-- neg-stable = λ ¬¬¬a a → (¬¬¬-elim ¬¬¬a) a
+neg-stable = ¬¬¬-elim
+
+×-stable : ∀ {A B : Set}
+  → Stable A
+  → Stable B
+    --------------
+  → Stable (A × B)
+×-stable sa sb = λ ¬¬a×b → (sa (λ ¬a → ¬¬a×b (λ a×b → ¬a (proj₁ a×b)))) , sb (λ ¬b → ¬¬a×b (λ a×b → ¬b (proj₂ a×b)))
+
 ```
 
 ## Standard Prelude
