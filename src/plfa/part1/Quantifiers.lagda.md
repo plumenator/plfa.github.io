@@ -103,12 +103,18 @@ Chapter [Connectives](/Connectives/).
 
 Show that a disjunction of universals implies a universal of disjunctions:
 ```
-postulate
-  ⊎∀-implies-∀⊎ : ∀ {A : Set} {B C : A → Set} →
-    (∀ (x : A) → B x) ⊎ (∀ (x : A) → C x)  →  ∀ (x : A) → B x ⊎ C x
+⊎∀-implies-∀⊎ : ∀ {A : Set} {B C : A → Set} →
+  (∀ (x : A) → B x) ⊎ (∀ (x : A) → C x) → ∀ (x : A) → B x ⊎ C x
+⊎∀-implies-∀⊎ (inj₁ aba) = inj₁ ∘ aba
+⊎∀-implies-∀⊎ (inj₂ aca) = inj₂ ∘ aca
 ```
 Does the converse hold? If so, prove; if not, explain why.
 
+Answer: It does not, because saying that one or more of B x and C x
+hold ∀ (x : A) is a weaker proposition than saying that B x holds ∀ (x
+: A) or C x holds ∀ (x : A). There could be an (x : A) for which
+either B x or C x would not hold, which would mean that neither B x
+nor C x would by themselves hold ∀ (x : A).
 
 #### Exercise `∀-×` (practice)
 
