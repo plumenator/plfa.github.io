@@ -129,7 +129,24 @@ Let `B` be a type indexed by `Tri`, that is `B : Tri → Set`.
 Show that `∀ (x : Tri) → B x` is isomorphic to `B aa × B bb × B cc`.
 Hint: you will need to postulate a version of extensionality that
 works for dependent functions.
+```
+postulate
+  ∀-extensionality : ∀ {A : Set} {B : A → Set} {f g : ∀(x : A) → B x}
+    → (∀ (x : A) → f x ≡ g x)
+      -----------------------
+    → f ≡ g
 
+∀-× : ∀ {B : Tri → Set} → (∀ (x : Tri) → B x) ≃ B aa × B bb × B cc
+∀-× =
+  record { to = λ tri→b → ⟨ (tri→b aa) , ⟨ (tri→b bb) , (tri→b cc) ⟩ ⟩
+         ; from = λ { ⟨ baa , ⟨ _   , _   ⟩ ⟩ aa → baa
+                    ; ⟨ _   , ⟨ bbb , _   ⟩ ⟩ bb → bbb
+                    ; ⟨ _   , ⟨ _   , bcc ⟩ ⟩ cc → bcc
+                    }
+         ; from∘to = λ tri→b → ∀-extensionality (λ { aa → refl ; bb → refl ; cc → refl})
+         ; to∘from = λ { ⟨ baa , ⟨ bbb , bcc ⟩ ⟩ → refl}
+         }
+```
 
 ## Existentials
 
