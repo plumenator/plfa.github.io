@@ -310,6 +310,25 @@ no x such that both Bx and C x hold.
 Let `Tri` and `B` be as in Exercise `∀-×`.
 Show that `∃[ x ] B x` is isomorphic to `B aa ⊎ B bb ⊎ B cc`.
 
+```
+∃-⊎ : ∀ {B : Tri → Set} → (∃[ x ] B x) ≃ B aa ⊎ B bb ⊎ B cc
+∃-⊎ =
+  record { to = λ { ⟨ aa , baa ⟩ → inj₁ baa
+                  ; ⟨ bb , bbb ⟩ → inj₂ (inj₁ bbb)
+                  ; ⟨ cc , bcc ⟩ → inj₂ (inj₂ bcc)
+                  }
+         ; from = λ { (inj₁ baa) → ⟨ aa , baa ⟩
+                    ; (inj₂ (inj₁ bbb)) → ⟨ bb , bbb ⟩
+                    ; (inj₂ (inj₂ bcc)) → ⟨ cc , bcc ⟩
+                    }
+         ; from∘to = λ { ⟨ aa , baa ⟩ → refl
+                       ; ⟨ bb , bbb ⟩ → refl
+                       ; ⟨ cc , bcc ⟩ → refl}
+         ; to∘from = λ { (inj₁ baa) → refl
+                       ; (inj₂ (inj₁ bbb)) → refl
+                       ; (inj₂ (inj₂ bcc)) → refl}
+         }
+```
 
 ## An existential example
 
