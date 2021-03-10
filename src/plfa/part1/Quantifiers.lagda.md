@@ -92,9 +92,18 @@ dependent product is ambiguous.
 
 Show that universals distribute over conjunction:
 ```
-postulate
-  ∀-distrib-× : ∀ {A : Set} {B C : A → Set} →
-    (∀ (x : A) → B x × C x) ≃ (∀ (x : A) → B x) × (∀ (x : A) → C x)
+open import Function using (_∘_)
+-- TODO: plfa.part1.Isomorphism._∘_ doesn't work
+-- open import plfa.part1.Isomorphism using (_∘_)
+
+∀-distrib-× : ∀ {A : Set} {B C : A → Set} →
+  (∀ (x : A) → B x × C x) ≃ (∀ (x : A) → B x) × (∀ (x : A) → C x)
+∀-distrib-× =
+  record { to = λ a→ba×ca → ⟨ proj₁ ∘ a→ba×ca , proj₂ ∘ a→ba×ca ⟩
+         ; from = λ { ⟨ a→ba , a→ca ⟩ a → ⟨ a→ba a , a→ca a ⟩}
+         ; from∘to = λ a→ba×ca → refl
+         ; to∘from = λ { ⟨ a→ba , a→ca ⟩ → refl}
+         }
 ```
 Compare this with the result (`→-distrib-×`) in
 Chapter [Connectives](/Connectives/).
