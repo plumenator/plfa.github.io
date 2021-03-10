@@ -294,11 +294,16 @@ Show that existentials distribute over disjunction:
 
 Show that an existential of conjunctions implies a conjunction of existentials:
 ```
-postulate
-  ∃×-implies-×∃ : ∀ {A : Set} {B C : A → Set} →
-    ∃[ x ] (B x × C x) → (∃[ x ] B x) × (∃[ x ] C x)
+∃×-implies-×∃ : ∀ {A : Set} {B C : A → Set} →
+  ∃[ x ] (B x × C x) → (∃[ x ] B x) × (∃[ x ] C x)
+∃×-implies-×∃ ⟨ a , ⟨ ca , ba ⟩ ⟩ = ⟨ ⟨ a , ca ⟩ , ⟨ a , ba ⟩ ⟩
 ```
 Does the converse hold? If so, prove; if not, explain why.
+
+Answer: Saying that both B x and C x hold for some x is a stronger
+statement than saying that there exists an x such that B x holds and
+there exists (probably) another x such that C x holds. There could be
+no x such that both Bx and C x hold.
 
 #### Exercise `∃-⊎` (practice)
 
