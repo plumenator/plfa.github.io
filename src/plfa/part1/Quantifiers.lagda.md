@@ -280,9 +280,14 @@ establish the isomorphism is identical to what we wrote when discussing
 
 Show that existentials distribute over disjunction:
 ```
-postulate
-  ∃-distrib-⊎ : ∀ {A : Set} {B C : A → Set} →
-    ∃[ x ] (B x ⊎ C x) ≃ (∃[ x ] B x) ⊎ (∃[ x ] C x)
+∃-distrib-⊎ : ∀ {A : Set} {B C : A → Set} →
+  ∃[ x ] (B x ⊎ C x) ≃ (∃[ x ] B x) ⊎ (∃[ x ] C x)
+∃-distrib-⊎ =
+  record { to = λ {⟨ a , inj₁ ba ⟩ → inj₁ ⟨ a , ba ⟩ ; ⟨ a , inj₂ ca ⟩ → inj₂ ⟨ a , ca ⟩}
+         ; from = λ {(inj₁ ⟨ a , ba ⟩) → ⟨ a , inj₁ ba ⟩ ; (inj₂ ⟨ a , va ⟩) → ⟨ a , inj₂ va ⟩}
+         ; from∘to = λ { ⟨ a , inj₁ ba ⟩ → refl ; ⟨ a , inj₂ ca ⟩ → refl}
+         ; to∘from = λ { (inj₁ ⟨ a , ba ⟩) → refl ; (inj₂ ⟨ a , ca ⟩) → refl}
+         }
 ```
 
 #### Exercise `∃×-implies-×∃` (practice)
